@@ -24,5 +24,7 @@ int _fork(void);
 char **get_toks(char *args, char *delimiter);
 void setcmd(char *buf, cmd_t *cmd);
 void runcmd(char **input, cmd_t *cmd);
+char *_getline(void);
+
 
 #endif // SHELL_H
