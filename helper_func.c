@@ -3,14 +3,15 @@
 #include <unistd.h>
 #include "shell.h"
 
-void prompt(void)
+void prompt(int status)
 {
-	fprintf(stdout, ":) ");
+	if (status)
+		fprintf(stderr, ":) ");
 }
 
 void t_error(char *s)
 {
-	fprintf(stdout, "%s\n", s);
+	fprintf(stderr, "%s", s);
 	exit(EXIT_FAILURE);
 }
 
