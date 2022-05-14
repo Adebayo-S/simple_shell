@@ -17,5 +17,7 @@ void prompt(void);
 char **parse_input(char *args);
 void setcmd(char *buf, cmd_t *cmd);
 void runcmd(char **input, cmd_t *cmd);
+char *_getline(void);
+
 
 #endif // SHELL_H
