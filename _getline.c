@@ -1,4 +1,4 @@
-#include "shell.h";
+#include "shell.h"
 
 char *_getline(void)
 {
@@ -12,7 +12,7 @@ char *_getline(void)
 		fprintf(stderr, "error: memory creation failed\n");
 		exit(EXIT_FAILURE);
 	}
-	
+
 	/*Each character inputted*/
 	single_val = getchar();
 
@@ -35,6 +35,6 @@ char *_getline(void)
 		mem[input_size++] = single_val;
 	}
 
-    mem[input_size] = '\0';
-    return mem;
+	mem[input_size] = '\0';
+	return mem;
 }
