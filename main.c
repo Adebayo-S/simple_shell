@@ -4,7 +4,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
 	char *buf;
 	cmd_t cmd;
-	int fd;
+	int fd, status;
 	size_t buflen = 0;
 	pid_t id;
 	char **input;
@@ -19,11 +19,12 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		}
 	}
 
-	while (1)
+	while (cmd->ready)
 	{
-		int status = isatty(STDIN_FILENO);
+		status = isatty(STDIN_FILENO);
 		prompt(status);
-		getline(&buf, &buflen, stdin);
+		if (getline(&buf, &buflen, stdin) == EOF)
+			cmd->ready = FALSE, exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);
 		input = get_toks(buf, " \t\n\r");
@@ -35,12 +36,16 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		// }
 
 		/*child process */
-		if (_fork() == 0)
-			runcmd(input, &cmd);
+		// if (stat(input[0], &st) == 0)
+		// {
+			if (_fork() == 0)
+				runcmd(input, &cmd);
+		//}
+
 		else
 			wait(NULL);
 	}
-		free(buf)
+		free(buf);
 		free(input);
 		return (0);
 }
