@@ -9,7 +9,7 @@ void runcmd(char **input, cmd_t *cmd)
 	{
 		case EXEC:
 			if (execve(input[0], input, NULL) < 0)
-				t_error("Error: fork failed\n");
+				t_error("No such file or directory\n");
 			break;
 	}
 
