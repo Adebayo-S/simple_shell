@@ -10,14 +10,17 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 
-#define EXEC 0
+#define EXEC 1
+#define MAXARGS 10
 
 typedef struct cmd_t
 {
 	int mode;
 	char **args;
+	int ready;
 } cmd_t;
 
+void init_cmd(cmd_t *cmd);
 void prompt(int status);
 void t_error(char *s);
 int _fork(void);
