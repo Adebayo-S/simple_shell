@@ -2,6 +2,7 @@
 
 char *_getline(void)
 {
+	int input_size;
 	int buffer_size = 2048;
 	char *mem = malloc(buffer_size * sizeof(char));
 	int _size = 0;
