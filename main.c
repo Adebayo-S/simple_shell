@@ -19,12 +19,17 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		}
 	}
 
-	while (cmd->ready)
+	init_cmd(&cmd);
+
+	while (cmd.ready)
 	{
 		status = isatty(STDIN_FILENO);
 		prompt(status);
 		if (getline(&buf, &buflen, stdin) == EOF)
-			cmd->ready = FALSE, exit(EXIT_SUCCESS);
+		{
+			cmd.ready = 0;
+			exit(EXIT_SUCCESS);
+		}
 
 		setcmd(buf, &cmd);
 		input = get_toks(buf, " \t\n\r");
