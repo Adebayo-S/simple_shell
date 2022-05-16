@@ -5,7 +5,7 @@ char **get_toks(char *args, char *delimiter)
 {
 	int i = 0;
 	char *token;
-	char **output = malloc((strlen(args) + 1) * sizeof(char *));
+	char **output = malloc(MAXARGS * sizeof(char *));
 	if (output == NULL)
 		return (NULL);
 
@@ -14,7 +14,8 @@ char **get_toks(char *args, char *delimiter)
 	{
 		output[i] = token;
 		i++;
-		//realloc(output, (i + 1) * sizeof(char *));
+		if (i > MAXARGS)
+			output = realloc(output, (i) * sizeof(char *));
 		token = strtok(NULL, delimiter);
 	}
 	output[i] = NULL;
