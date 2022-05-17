@@ -2,7 +2,8 @@
 
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
-	char *buf;
+	char *buf, *dir;
+	struct stat st;
 	cmd_t cmd;
 	int fd, status;
 	size_t buflen = 0;
@@ -10,47 +11,35 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 	char **input;
 
 	/*Ensure the 3 file descriptors are open */
-	while ((fd = open("/dev/console", O_RDWR)) >= 0)
-	{
-		if (fd >= 3)
-		{
-			close(fd);
-			break;
-		}
-	}
+	open_console();
 
+	/*Initialize the global cmd struct variable*/
 	init_cmd(&cmd);
 
+	/*REPL Loop*/
 	while (cmd.ready)
 	{
 		status = isatty(STDIN_FILENO);
 		prompt(status);
-		if (getline(&buf, &buflen, stdin) == EOF)
-		{
-			cmd.ready = 0;
-			exit(EXIT_SUCCESS);
-		}
+
+		if (getline(&buf, &buflen, stdin) <= EOF)
+			cmd.ready = 0, exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);
-		input = get_toks(buf, " \t\n\r");
+		input = get_toks(buf, DELIM);
 
-		// if (check_builtin())
-		// {
-		// 	//perform builtin
-		// 	continue;
-		// }
+		dir = _which(input[0]);
 
-		/*child process */
-		// if (stat(input[0], &st) == 0)
-		// {
-			if (_fork() == 0)
-				runcmd(input, &cmd);
-		//}
+		if (parse_builtins(dir))
+			continue;
 
+		if (dir && _fork() == 0)
+			runcmd(dir, input, &cmd);
 		else
 			wait(NULL);
 	}
-		free(buf);
-		free(input);
-		return (0);
+
+	free(buf);
+	free(input);
+	return (0);
 }
