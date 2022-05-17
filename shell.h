@@ -32,7 +32,7 @@ int _fork(void);
 char **get_toks(char *args, char *delimiter);
 void setcmd(char *buf, cmd_t *cmd);
 void runcmd(char* dir, char **input, cmd_t *cmd);
-char *_getline(void);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 /* builtins */
 typedef struct builtins
