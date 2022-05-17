@@ -3,6 +3,18 @@
 #include <unistd.h>
 #include "shell.h"
 
+void open_console(void)
+{
+	while ((fd = open("/dev/console", O_RDWR)) >= 0)
+	{
+		if (fd >= 3)
+		{
+			close(fd);
+			break;
+		}
+	}
+}
+
 void prompt(int status)
 {
 	if (status)
