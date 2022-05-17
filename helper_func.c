@@ -3,14 +3,15 @@
 #include <unistd.h>
 #include "shell.h"
 
-void prompt(void)
+void prompt(int status)
 {
-	fprintf(stdout, ":) ");
+	if (status)
+		write(STDIN_FILENO, ":) ", 3);
 }
 
 void t_error(char *s)
 {
-	fprintf(stdout, "%s\n", s);
+	write(STDERR_FILENO, s, strlen(s));
 	exit(EXIT_FAILURE);
 }
 
@@ -18,6 +19,6 @@ int _fork(void)
 {
 	pid_t id = fork();
 	if (id < 0)
-		t_error("Error: fork failed\n");
+		t_error("Error: fork failed");
 	return (id);
 }

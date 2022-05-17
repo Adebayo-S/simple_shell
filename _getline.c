@@ -1,4 +1,4 @@
-#include "shell.h";
+#include "shell.h"
 
 /**
  * assign_lineptr - Reassigns the lineptr variable for _getline.
@@ -102,4 +102,8 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream)
         input = 0;
     }
     return (ret);
+}
+=======
+	mem[input_size] = '\0';
+	return mem;
 }
