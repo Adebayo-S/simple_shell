@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void runcmd(char **input, cmd_t *cmd)
+void runcmd(char* dir, char **input, cmd_t *cmd)
 {
 	if (input[0] == NULL)
 		exit(EXIT_FAILURE);
@@ -8,7 +8,7 @@ void runcmd(char **input, cmd_t *cmd)
 	switch (cmd->mode)
 	{
 		case EXEC:
-			if (execve(input[0], input, NULL) < 0)
+			if (execve(dir, input, NULL) < 0)
 				t_error("No such file or directory\n");
 			break;
 	}
