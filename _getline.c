@@ -1,40 +1,33 @@
 #include "shell.h";
 
-char *_getline(void)
+/**
+ * assign_lineptr - Reassigns the lineptr variable for _getline.
+ * @lineptr: A buffer to store an input string.
+ * @n: The size of lineptr.
+ * @buffer: The string to assign to lineptr.
+ * @b: The size of buffer.
+ */
+void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
 {
-	int buffer_size = 2048;
-	char *mem = malloc(buffer_size * sizeof(char));
-	int _size = 0;
-	char single_val;
-
-	if (mem == NULL)
+	if (*lineptr == NULL)
 	{
-		fprintf(stderr, "error: memory creation failed\n");
-		exit(EXIT_FAILURE);
+		if (b > 120)
+			*n = b;
+		else
+			*n = 120;
+		*lineptr = buffer;
 	}
-	
-	/*Each character inputted*/
-	single_val = getchar();
-
-	while (single_val != '\n')
+	else if (*n < b)
 	{
-		/* did user enter ctrl+d ?*/
-		if (single_val == EOF)
-		{
-			free(mem);
-			return NULL;
-		}
-
-		/* allocate more memory for input if exceeded */
-		if (input_size >= buffer_size)
-		{
-			buffer_size = 2 * buffer_size;
-			mem = realloc(mem, buffer_size);
-		}
-
-		mem[input_size++] = single_val;
+		if (b > 120)
+			*n = b;
+		else
+			*n = 120;
+		*lineptr = buffer;
 	}
-
-    mem[input_size] = '\0';
-    return mem;
+	else
+	{
+		strcpy(*lineptr, buffer);
+		free(buffer);
+	}
 }
