@@ -16,9 +16,9 @@ int exit_sh(char **input, cmd_t *cmd)
 
 	if (input[1])
 	{
-		ustatus = atoi(input[1]);
+		ustatus = _atoi(input[1]);
 		is_digit = _isdigit(input[1]);
-		str_len = strlen(input[1]);
+		str_len = _strlen(input[1]);
 		big_number = ustatus > (unsigned int)INT_MAX;
 		if (!is_digit || str_len > 10 || big_number)
 		{
