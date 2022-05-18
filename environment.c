@@ -25,6 +25,14 @@ int _env(char **input)
 	return (1);
 }
 
+/**
+ * _getenv - gets an environment variable
+ *
+ * @name: name of environmental variable
+ *
+ * Return: pointer to the value in the environment,
+ * or NULL if there is no match *
+ */
 char *_getenv(const char *name)
 {
 	int i, j, start;
@@ -50,6 +58,12 @@ char *_getenv(const char *name)
 	return (envar + start);
 }
 
+/**
+ * _which - Append command to corresponding PATH directory
+ * @input: input data from getline.
+ *
+ * Return: the path of the command or NULL if invalid
+ */
 char *_which(char *input)
 {
 	char *path, *cpy_path, *path_toks, *dir;
