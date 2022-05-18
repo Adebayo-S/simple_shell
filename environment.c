@@ -1,5 +1,31 @@
 #include "shell.h"
 
+/**
+ * _env - prints the evironment variables
+ *
+ * @input: input data from getline.
+ * @cmd: struct of global variables
+ * Return: EXIT_SUCCESS on success.
+ */
+int _env(char **input, cmd_t *cmd)
+{
+	char **tmp = input;
+	tmp = NULL;
+
+	int i, j;
+
+	for (i = 0; environ[i]; i++)
+	{
+		for (j = 0; environ[i][j]; j++)
+			;
+
+		write(STDOUT_FILENO, environ[i], j);
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	cmd->status = 0;
+	exit(EXIT_SUCCESS);
+}
+
 char *_getenv(const char *name)
 {
 	int i, j;
