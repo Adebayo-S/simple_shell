@@ -3,14 +3,28 @@
 #include <unistd.h>
 #include "shell.h"
 
-void prompt(void)
+void open_console(void)
 {
-	fprintf(stdout, ":) ");
+	int fd;
+	while ((fd = open("/dev/console", O_RDWR)) >= 0)
+	{
+		if (fd >= 3)
+		{
+			close(fd);
+			break;
+		}
+	}
+}
+
+void prompt(int status)
+{
+	if (status)
+		write(STDIN_FILENO, ":) ", 3);
 }
 
 void t_error(char *s)
 {
-	fprintf(stdout, "%s\n", s);
+	write(STDERR_FILENO, s, strlen(s));
 	exit(EXIT_FAILURE);
 }
 
@@ -18,6 +32,6 @@ int _fork(void)
 {
 	pid_t id = fork();
 	if (id < 0)
-		t_error("Error: fork failed\n");
+		t_error("Error: fork failed");
 	return (id);
 }
