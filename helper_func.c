@@ -5,6 +5,7 @@
 
 void open_console(void)
 {
+	int fd;
 	while ((fd = open("/dev/console", O_RDWR)) >= 0)
 	{
 		if (fd >= 3)
