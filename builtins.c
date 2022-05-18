@@ -32,24 +32,4 @@ int exit_sh(char **input, cmd_t *cmd)
 	return (1);
 }
 
-/**
- * c_dir - change directory master function
- * @input: the input string
- */
-/*
- * int c_dir(char **input)
- * {
- * char *args = input[1];
- * if (!args || !_strcmp(args, "~") || !_strcmp(args, "$HOME") ||
- * !_strcmp(args, "--"))
- * return (cd_home());
- * else if (!_strcmp(args, "-"))
- * return (cd_back());
- * lse if (!_strcmp(args, "."))
- * return (cd_curr());
- * else if (!_strcmp(args, ".."))
- * return (cd_parent());
- * else
- * return (cd_path(input[1]));
- * }
- */
+
