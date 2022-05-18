@@ -5,21 +5,21 @@ int c_dir(char **input)
 {
 	char *args = input[1];
 	if (!args || !strcmp(args, "~") || !strcmp(args, "$HOME") || !strcmp(args, "--"))
-		cd_home();
-	if (!strcmp(args, "-"))
-		cd_back();
-	if (!strcmp(args, "."))
-		cd_curr();
-	if (!strcmp(args, ".."))
-		cd_parent();
-	cd_path(input[i]);
+		return (cd_home());
+	else if (!strcmp(args, "-"))
+		return (cd_back());
+	else if (!strcmp(args, "."))
+		return (cd_curr());
+	else if (!strcmp(args, ".."))
+		return (cd_parent());
+	else
+		return (cd_path(input[1]));
 }
 
 /**
  * cd_home - changes to home directory
  *
  * Return: EXIT_SUCCESS
- */
  */
 int cd_home(void)
 {
@@ -30,24 +30,29 @@ int cd_home(void)
 	p_cwd = strdup(cwd);
 
 	home = _getenv("HOME");
+	printf("%s\n", home);
 
 	if (home == NULL)
 	{
-		setenv("OLDPWD", p_cwd);
+		setenv("OLDPWD", p_cwd, 1);
 		free(p_cwd);
-		exit(EXIT_SUCCESS);
+		return (1);
 	}
 
 	if (chdir(home) == -1)
 	{
 		free(p_cwd);
 		t_error("Cannot go home\n");
+		return (1);
 	}
 
-	setenv("OLDPWD", p_cwd);
-	setenv("PWD", home);
+	write(STDOUT_FILENO, home, strlen(home));
+	write(STDOUT_FILENO, "\n", 1);
+
+	setenv("OLDPWD", p_cwd, 1);
+	setenv("PWD", home, 1);
 	free(p_cwd);
-	exit(EXIT_SUCCESS);
+	return (1);
 }
 
 /**
@@ -70,16 +75,16 @@ int cd_back(void)
 	else
 		cp_oldcwd = strdup(p_oldcwd);
 
-	setenv("OLDPWD", cp_cwd);
+	setenv("OLDPWD", cp_cwd, 1);
 
 	if (chdir(cp_oldcwd) == -1)
-		setenv("PWD", cp_cwd);
+		setenv("PWD", cp_cwd, 1);
 	else
-		setenv("PWD", cp_oldcwd);
+		setenv("PWD", cp_oldcwd, 1);
 
 	p_cwd = _getenv("PWD");
 
-	write(STDOUT_FILENO, p_cwd, _strlen(p_cwd));
+	write(STDOUT_FILENO, p_cwd, strlen(p_cwd));
 	write(STDOUT_FILENO, "\n", 1);
 
 	free(cp_cwd);
@@ -87,7 +92,7 @@ int cd_back(void)
 		free(cp_oldcwd);
 
 	chdir(p_cwd);
-	exit(EXIT_SUCCESS);
+	return (1);
 }
 
 /**
@@ -103,9 +108,13 @@ int cd_curr(void)
 	getcwd(cwd, sizeof(cwd));
 	cp_cwd = strdup(cwd);
 
-	setenv("PWD", cp_cwd);
+	setenv("PWD", cp_cwd, 1);
+
+	write(STDOUT_FILENO, cp_cwd, strlen(cp_cwd));
+	write(STDOUT_FILENO, "\n", 1);
+
 	free(cp_cwd);
-	exit(EXIT_SUCCESS);
+	return (1);
 }
 
 /**
@@ -116,20 +125,46 @@ int cd_curr(void)
 int cd_parent(void)
 {
 	char cwd[PATH_MAX];
-	char *cp_cwd;
+	char *dir, *cp_cwd, *cp_strtok_cwd;
 
 	getcwd(cwd, sizeof(cwd));
 	cp_cwd = strdup(cwd);
+	setenv("OLDPWD", cp_cwd, 1);
 
 	if (!strcmp("/", cp_cwd))
 	{
 		free(cp_cwd);
-		exit(EXIT_SUCCESS);
+		return (1);
 	}
 
-	setenv("OLDPWD", cp_cwd);
+	cp_strtok_cwd = cp_cwd;
+	str_reverse(cp_strtok_cwd);
+
+	cp_strtok_cwd = strtok(cp_strtok_cwd, "/");
+	if (cp_strtok_cwd != NULL)
+	{
+		cp_strtok_cwd = strtok(NULL, "\0");
+
+		if (cp_strtok_cwd != NULL)
+			str_reverse(cp_strtok_cwd);
+	}
+
+	if (cp_strtok_cwd != NULL)
+	{
+		chdir(cp_strtok_cwd);
+		setenv("PWD", cp_strtok_cwd, 1);
+	}
+	else
+	{
+		chdir("/");
+		setenv("PWD", "/", 1);
+	}
+
+	write(STDOUT_FILENO, cp_strtok_cwd, strlen(cp_strtok_cwd));
+	write(STDOUT_FILENO, "\n", 1);
+
 	free(cp_cwd);
-	exit(EXIT_SUCCESS);
+	return (1);
 }
 
 /**
@@ -147,17 +182,20 @@ int cd_path(char *dir)
 	getcwd(cwd, sizeof(cwd));
 
 	if (chdir(dir) == -1)
-		t_error("Cannot change to given directory\n");
+		t_error("Cannot change to the given directory\n");
 
-	cp_cwd = _strdup(cwd);
-	setenv("OLDPWD", cp_cwd, datash);
+	cp_cwd = strdup(cwd);
+	setenv("OLDPWD", cp_cwd, 1);
 
-	cp_dir = _strdup(dir);
-	setenv("PWD", cp_dir);
+	cp_dir = strdup(dir);
+	setenv("PWD", cp_dir, 1);
+
+	write(STDOUT_FILENO, cp_dir, strlen(cp_dir));
+	write(STDOUT_FILENO, "\n", 1);
 
 	free(cp_cwd);
 	free(cp_dir);
 
 	chdir(dir);
-	exit(EXIT_SUCCESS);
+	return (1);
 }
