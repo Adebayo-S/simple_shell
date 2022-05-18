@@ -18,6 +18,7 @@ char **parse_input(char *args);
 void setcmd(char *buf, cmd_t *cmd);
 void runcmd(char **input, cmd_t *cmd);
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+int _strcmp(char *s1, char *s2);
 
 
 #endif // SHELL_H
