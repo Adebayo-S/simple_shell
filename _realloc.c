@@ -1,36 +1,55 @@
 #include "shell.h"
 
 /**
- * _realloc -reallocate memory
- * @ptr: pointer pointing to the memory
- * 
- * Return: the pointer pointing to the memory address
+ * _realloc - reallocates a memory block.
+ * @ptr: pointer to the memory previously allocated.
+ * @old_size: size, in bytes, of the allocated space of ptr.
+ * @new_size: new size, in bytes, of the new memory block.
+ *
+ * Return: ptr.
+ * if new_size == old_size, returns ptr without changes.
+ * if malloc fails, returns NULL.
  */
-void *_realloc(void *ptr, size_t originalLength, size_t newLength)
+void *_realloc(void *ptr, size_t old_size, size_t new_size)
 {
+	unsigned int i, j;
+	char *newPtr;
 
-   if (newLength == 0)
-   {
-      free(ptr);
-      return NULL;
-   }
-   else if (!ptr)
-   {
-      return malloc(newLength);
-   }
-   else if (newLength <= originalLength)
-   {
-      return ptr;
-   }
-   else
-   {
-      assert((ptr) && (newLength > originalLength));
-      void *ptrNew = malloc(newLength);
-      if (ptrNew)
-      {
-          memcpy(ptrNew, ptr, originalLength);
-          free(ptr);
-      }
-      return ptrNew;
-    }
+	if (old_size == new_size)
+		return (ptr);
+	if (ptr == NULL)
+	{
+		ptr = malloc(new_size);
+		if (ptr == NULL)
+			return (NULL);
+		return (ptr);
+	}
+
+	if (new_size == 0 && ptr != NULL)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	newPtr = malloc(new_size * sizeof(char));
+			if (newPtr == NULL)
+				return (NULL);
+
+	if (new_size > old_size)
+	{
+		for (i = 0; i < old_size; i++)
+		{
+			newPtr[i] = ((char *)ptr)[i];
+		}
+		free(ptr);
+		return (newPtr);
+	}
+	else
+	{
+		for (j = 0; j < new_size; j++)
+		{
+			newPtr[j] = ((char *)ptr)[j];
+		}
+		free(ptr);
+		return (newPtr);
+	}
 }
