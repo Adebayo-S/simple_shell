@@ -72,25 +72,25 @@ char *_which(char *input)
 
 	if (path)
 	{
-		cpy_path = strdup(path);
-		len_input = strlen(input);
-		path_toks = strtok(cpy_path, ":");
+		cpy_path = _strdup(path);
+		len_input = _strlen(input);
+		path_toks = _strtok(cpy_path, ":");
 
 		while (path_toks != NULL)
 		{
-			len_dir = strlen(path_toks);
+			len_dir = _strlen(path_toks);
 			dir = malloc(len_dir + len_input + 2);
-			strcpy(dir, path_toks);
-			strcat(dir, "/");
-			strcat(dir, input);
-			strcat(dir, "\0");
+			_strcpy(dir, path_toks);
+			_strcat(dir, "/");
+			_strcat(dir, input);
+			_strcat(dir, "\0");
 			if (stat(dir, &st) == 0)
 			{
 				free(cpy_path);
 				return (dir);
 			}
 			free(dir);
-			path_toks = strtok(NULL, ":");
+			path_toks = _strtok(NULL, ":");
 		}
 		free(cpy_path);
 		if (stat(input, &st) == 0)

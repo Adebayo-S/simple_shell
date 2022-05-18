@@ -16,12 +16,12 @@ int parse_builtins(char **input, cmd_t *cmd)
 		{NULL, NULL}
 	};
 
-	if (!strcmp("exit", input[0]))
+	if (!_strcmp("exit", input[0]))
 		return (exit_sh(input, cmd));
 
 	for (i = 0; builtin[i].name; i++)
 	{
-		if (!strcmp(builtin[i].name, input[0]))
+		if (!_strcmp(builtin[i].name, input[0]))
 			return (builtin[i].f(input));
 	}
 	return (0);

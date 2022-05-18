@@ -11,6 +11,7 @@
 void open_console(void)
 {
 	int fd;
+
 	while ((fd = open("/dev/console", O_RDWR)) >= 0)
 	{
 		if (fd >= 3)
@@ -41,7 +42,7 @@ void prompt(int status)
  */
 void t_error(char *s)
 {
-	write(STDERR_FILENO, s, strlen(s));
+	write(STDERR_FILENO, s, _strlen(s));
 }
 
 /**
