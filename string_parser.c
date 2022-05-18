@@ -22,9 +22,11 @@ char **get_toks(char *args, char *delimiter)
 		output[i] = token;
 		i++;
 		if (i == MAXARGS)
+		{
 			output = _realloc(output, i, i * sizeof(char *));
 			if (output == NULL)
 				exit(EXIT_FAILURE);
+		}
 		token = strtok(NULL, delimiter);
 	}
 	output[i] = NULL;

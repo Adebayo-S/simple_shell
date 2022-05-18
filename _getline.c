@@ -49,26 +49,15 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	int r;
 
 	if (input == 0)
-	{
 		fflush(stream);
-	}
 	else
-	{
 		return (-1);
-	}
 
 	input = 0;
-
-	//Allocating memory
 	buffer = malloc(sizeof(char) * 120);
-
-	// if memory allocation fails
 	if (!buffer)
-	{
 		return (-1);
-	}
 
-	//Initialize a loop to read all char if c is not newline
 	while (c != '\n')
 	{
 		r = read(STDIN_FILENO, &c, 1);
@@ -83,23 +72,14 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 			break;
 		}
 		if (input >= 120)
-		{
-			buffer = realloc(buffer, input + 1);
-		}
-
-		buffer[input] = c;
-		input++;
+			buffer = _realloc(buffer, 120, input + 1);
+		buffer[input] = c, input++;
 	}
-
-	//add newline at the end of the buffer
 	buffer[input] = '\n';
-
 	assign_lineptr(lineptr, n, buffer, input);
 
 	ret = input;
-	if(r != 0)
-	{
+	if (r != 0)
 		input = 0;
-	}
 	return (ret);
 }

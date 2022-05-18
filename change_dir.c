@@ -127,7 +127,7 @@ int cd_curr(void)
 int cd_parent(void)
 {
 	char cwd[PATH_MAX];
-	char *dir, *cp_cwd, *cp_strtok_cwd;
+	char *cp_cwd, *cp_strtok_cwd;
 
 	getcwd(cwd, sizeof(cwd));
 	cp_cwd = _strdup(cwd);

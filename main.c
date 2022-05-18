@@ -11,11 +11,9 @@
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
 	char *buf, *dir;
-	struct stat st;
 	cmd_t cmd;
 	int status;
 	size_t buflen = 0;
-	pid_t id;
 	char **input;
 
 	/*Ensure the 3 file descriptors are open */
