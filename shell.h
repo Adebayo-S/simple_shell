@@ -31,6 +31,9 @@ void prompt(int status);
 void t_error(char *s);
 int _fork(void);
 void setcmd(char *buf, cmd_t *cmd);
+void runcmd(char **input, cmd_t *cmd);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+void *_realloc(void *ptr, size_t originalLength, size_t newLength)
 void runcmd(char* dir, char **input, cmd_t *cmd);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 
@@ -60,5 +63,9 @@ int cd_home(void);
 int _isdigit(const char *str);
 char **get_toks(char *args, char *delimiter);
 void str_reverse(char *s);
+int _strcmp(char *s1, char *s2);
+char *_strcat(char *dest, char *src);
+char **_strtok(char *line, char *delim);
+int _strlen(char *s);
 
 #endif /* SHELL_H */
