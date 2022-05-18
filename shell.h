@@ -82,6 +82,7 @@ char *_strdup(char *str);
 int _strcmp(char *str_a, char *str_b);
 char *_strcat(char *dest, char *src);
 int _strlen(char *s);
+char *_strcpy(char *dest, char *src);
 int _atoi(char *s);
 
 #endif /* SHELL_H */
