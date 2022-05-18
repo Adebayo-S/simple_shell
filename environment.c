@@ -6,8 +6,8 @@
  * @input: input data from getline.
  * @cmd: struct of global variables
  * Return: EXIT_SUCCESS on success.
- */
-int _env(char **input, cmd_t *cmd)
+ */s
+int _env(char **input)
 {
 	char **tmp = input;
 	tmp = NULL;
@@ -22,7 +22,6 @@ int _env(char **input, cmd_t *cmd)
 		write(STDOUT_FILENO, environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	cmd->status = 0;
 	exit(EXIT_SUCCESS);
 }
 
@@ -41,7 +40,6 @@ char *_getenv(const char *name)
 			break;
 		}
 	}
-
 	return (envar + (i + 1));
 }
 
