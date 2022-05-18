@@ -12,7 +12,7 @@ int parse_builtins(char **input, cmd_t *cmd)
 	int i;
 
 	built_t builtin[] = {
-		{"cd", c_dir}, {"env", _env},
+		{"env", _env},
 		{NULL, NULL}
 	};
 
