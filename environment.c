@@ -6,7 +6,7 @@
  * @input: input data from getline.
  * @cmd: struct of global variables
  * Return: EXIT_SUCCESS on success.
- */s
+ */
 int _env(char **input)
 {
 	char **tmp = input;
@@ -22,33 +22,42 @@ int _env(char **input)
 		write(STDOUT_FILENO, environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	exit(EXIT_SUCCESS);
+	return (1);
 }
 
 char *_getenv(const char *name)
 {
-	int i, j;
+	int i, j, start;
 	char *envar = NULL;
 
 	for (i = 0; environ[i]; i++)
 	{
-		if (!strcmp(environ[i], name))
+		for (j = 0; environ[i][j] != '='; j++)
 		{
-			for (j = 0; environ[i][j] != '='; j++)
-				;
+			if (environ[i][j] != name[j])
+			{
+				start = 0;
+				break;
+			}
 			envar = environ[i];
+		}
+		if (environ[i][j] == '=')
+		{
+			start = (j + 1);
 			break;
 		}
 	}
-	return (envar + (i + 1));
+	return (envar + start);
 }
 
 char *_which(char *input)
 {
 	char *path, *cpy_path, *path_toks, *dir;
 	int len_dir, len_input, i;
+	struct stat st;
 
 	path = _getenv("PATH");
+
 	if (path)
 	{
 		cpy_path = strdup(path);
