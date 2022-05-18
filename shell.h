@@ -37,6 +37,7 @@ void *_realloc(void *ptr, size_t originalLength, size_t newLength)
 void runcmd(char* dir, char **input, cmd_t *cmd);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 int _setenv(list_t **env, char **str);
+int _unsetenv(list_t **env, char **str)
 
 /* ------------------ENVIRONMENT----------------- */
 char *_which(char *input);
