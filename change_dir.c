@@ -1,16 +1,19 @@
 #include "shell.h"
 
-/*lsca*/
+/**
+ * c_dir - change directory master function
+ * @input: the input string
+ */
 int c_dir(char **input)
 {
 	char *args = input[1];
-	if (!args || !strcmp(args, "~") || !strcmp(args, "$HOME") || !strcmp(args, "--"))
+	if (!args || !_strcmp(args, "~") || !_strcmp(args, "$HOME") || !_strcmp(args, "--"))
 		return (cd_home());
-	else if (!strcmp(args, "-"))
+	else if (!_strcmp(args, "-"))
 		return (cd_back());
-	else if (!strcmp(args, "."))
+	else if (!_strcmp(args, "."))
 		return (cd_curr());
-	else if (!strcmp(args, ".."))
+	else if (!_strcmp(args, ".."))
 		return (cd_parent());
 	else
 		return (cd_path(input[1]));
@@ -27,10 +30,9 @@ int cd_home(void)
 	char cwd[PATH_MAX];
 
 	getcwd(cwd, sizeof(cwd));
-	p_cwd = strdup(cwd);
+	p_cwd = _strdup(cwd);
 
 	home = _getenv("HOME");
-	printf("%s\n", home);
 
 	if (home == NULL)
 	{
@@ -46,7 +48,7 @@ int cd_home(void)
 		return (1);
 	}
 
-	write(STDOUT_FILENO, home, strlen(home));
+	write(STDOUT_FILENO, home, _strlen(home));
 	write(STDOUT_FILENO, "\n", 1);
 
 	setenv("OLDPWD", p_cwd, 1);
@@ -66,14 +68,14 @@ int cd_back(void)
 	char *p_cwd, *p_oldcwd, *cp_cwd, *cp_oldcwd;
 
 	getcwd(cwd, sizeof(cwd));
-	cp_cwd = strdup(cwd);
+	cp_cwd = _strdup(cwd);
 
 	p_oldcwd = _getenv("OLDPWD");
 
 	if (p_oldcwd == NULL)
 		cp_oldcwd = cp_cwd;
 	else
-		cp_oldcwd = strdup(p_oldcwd);
+		cp_oldcwd = _strdup(p_oldcwd);
 
 	setenv("OLDPWD", cp_cwd, 1);
 
@@ -84,7 +86,7 @@ int cd_back(void)
 
 	p_cwd = _getenv("PWD");
 
-	write(STDOUT_FILENO, p_cwd, strlen(p_cwd));
+	write(STDOUT_FILENO, p_cwd, _strlen(p_cwd));
 	write(STDOUT_FILENO, "\n", 1);
 
 	free(cp_cwd);
@@ -106,11 +108,11 @@ int cd_curr(void)
 	char *cp_cwd;
 
 	getcwd(cwd, sizeof(cwd));
-	cp_cwd = strdup(cwd);
+	cp_cwd = _strdup(cwd);
 
 	setenv("PWD", cp_cwd, 1);
 
-	write(STDOUT_FILENO, cp_cwd, strlen(cp_cwd));
+	write(STDOUT_FILENO, cp_cwd, _strlen(cp_cwd));
 	write(STDOUT_FILENO, "\n", 1);
 
 	free(cp_cwd);
@@ -128,10 +130,10 @@ int cd_parent(void)
 	char *dir, *cp_cwd, *cp_strtok_cwd;
 
 	getcwd(cwd, sizeof(cwd));
-	cp_cwd = strdup(cwd);
+	cp_cwd = _strdup(cwd);
 	setenv("OLDPWD", cp_cwd, 1);
 
-	if (!strcmp("/", cp_cwd))
+	if (!_strcmp("/", cp_cwd))
 	{
 		free(cp_cwd);
 		return (1);
@@ -140,10 +142,10 @@ int cd_parent(void)
 	cp_strtok_cwd = cp_cwd;
 	str_reverse(cp_strtok_cwd);
 
-	cp_strtok_cwd = strtok(cp_strtok_cwd, "/");
+	cp_strtok_cwd = _strtok(cp_strtok_cwd, "/");
 	if (cp_strtok_cwd != NULL)
 	{
-		cp_strtok_cwd = strtok(NULL, "\0");
+		cp_strtok_cwd = _strtok(NULL, "\0");
 
 		if (cp_strtok_cwd != NULL)
 			str_reverse(cp_strtok_cwd);
@@ -160,7 +162,7 @@ int cd_parent(void)
 		setenv("PWD", "/", 1);
 	}
 
-	write(STDOUT_FILENO, cp_strtok_cwd, strlen(cp_strtok_cwd));
+	write(STDOUT_FILENO, cp_strtok_cwd, _strlen(cp_strtok_cwd));
 	write(STDOUT_FILENO, "\n", 1);
 
 	free(cp_cwd);
@@ -182,15 +184,17 @@ int cd_path(char *dir)
 	getcwd(cwd, sizeof(cwd));
 
 	if (chdir(dir) == -1)
+	{
 		t_error("Cannot change to the given directory\n");
-
-	cp_cwd = strdup(cwd);
+		return (1);
+	}
+	cp_cwd = _strdup(cwd);
 	setenv("OLDPWD", cp_cwd, 1);
 
-	cp_dir = strdup(dir);
+	cp_dir = _strdup(dir);
 	setenv("PWD", cp_dir, 1);
 
-	write(STDOUT_FILENO, cp_dir, strlen(cp_dir));
+	write(STDOUT_FILENO, cp_dir, _strlen(cp_dir));
 	write(STDOUT_FILENO, "\n", 1);
 
 	free(cp_cwd);
