@@ -3,10 +3,11 @@
 /**
  * _setenv - create or modify existing environmental variable in linked list
  * @env: linked list
- * @str: user's typed in command (e.g. "setenv USER Superman")
+ * @name: user's typed in command (e.g. "setenv USER Superman")
+ * @dir: directory of the command to execute
  * Return: 0 on success, 1 on fail
  */
-int _setenv(char *name, char *dir, int mode)
+int _setenv(char *name, char *dir, list_t *env)
 {
 	int index = 0, j = 0;
 	char *cat;

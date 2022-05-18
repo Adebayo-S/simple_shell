@@ -5,7 +5,7 @@
  * get_toks - get tokens from input
  *
  * @args: input string.
- * @delim: delimiter.
+ * @delimiter: delimiter.
  * Return: a vector of the splited input strings.
  */
 char **get_toks(char *args, char *delimiter)
@@ -37,7 +37,7 @@ char **get_toks(char *args, char *delimiter)
 /**
  * _isdigit - defines if string passed is a number
  *
- * @s: input string
+ * @str: input string
  * Return: 1 if string is a number. 0 in other case.
  */
 int _isdigit(const char *str)

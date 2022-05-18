@@ -18,7 +18,7 @@
 extern char **environ;
 
 /**
- * struct sev_s - shell env vars
+ * struct cmd_t - shell env vars
  * @mode: determines the mode of execution
  * @args: the arguments to be executed
  * @ready: determines if the shell should run.

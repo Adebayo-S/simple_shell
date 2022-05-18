@@ -1,23 +1,5 @@
 #include "shell.h"
 
-/**
- * c_dir - change directory master function
- * @input: the input string
- */
-int c_dir(char **input)
-{
-	char *args = input[1];
-	if (!args || !_strcmp(args, "~") || !_strcmp(args, "$HOME") || !_strcmp(args, "--"))
-		return (cd_home());
-	else if (!_strcmp(args, "-"))
-		return (cd_back());
-	else if (!_strcmp(args, "."))
-		return (cd_curr());
-	else if (!_strcmp(args, ".."))
-		return (cd_parent());
-	else
-		return (cd_path(input[1]));
-}
 
 /**
  * cd_home - changes to home directory
@@ -146,7 +128,6 @@ int cd_parent(void)
 	if (cp_strtok_cwd != NULL)
 	{
 		cp_strtok_cwd = _strtok(NULL, "\0");
-
 		if (cp_strtok_cwd != NULL)
 			str_reverse(cp_strtok_cwd);
 	}

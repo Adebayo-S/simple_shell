@@ -52,6 +52,7 @@ void t_error(char *s)
 int _fork(void)
 {
 	pid_t id = fork();
+
 	if (id < 0)
 		t_error("Error: fork failed");
 	return (id);

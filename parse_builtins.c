@@ -12,8 +12,7 @@ int parse_builtins(char **input, cmd_t *cmd)
 	int i;
 
 	built_t builtin[] = {
-		{"cd", c_dir}, {"env", _env}, /*{"setenv", _setenv},
-		{"unsetenv", _unsetenv}, {"help", _help},*/
+		{"cd", c_dir}, {"env", _env},
 		{NULL, NULL}
 	};
 
@@ -25,5 +24,5 @@ int parse_builtins(char **input, cmd_t *cmd)
 		if (!strcmp(builtin[i].name, input[0]))
 			return (builtin[i].f(input));
 	}
-	return(0);
+	return (0);
 }
