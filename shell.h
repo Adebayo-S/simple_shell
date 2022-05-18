@@ -21,6 +21,7 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 int _strcmp(char *s1, char *s2);
 char *_strcat(char *dest, char *src);
 char **_strtok(char *line, char *delim);
+int _strlen(char *s);
 
 
 #endif // SHELL_H
