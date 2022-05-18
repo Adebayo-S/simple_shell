@@ -12,7 +12,42 @@ int c_dir(char **input)
 		cd_curr();
 	if (!strcmp(args, ".."))
 		cd_parent();
-	cd_path();
+	cd_path(input[i]);
+}
+
+/**
+ * cd_home - changes to home directory
+ *
+ * Return: EXIT_SUCCESS
+ */
+ */
+int cd_home(void)
+{
+	char *p_cwd, *home;
+	char cwd[PATH_MAX];
+
+	getcwd(cwd, sizeof(cwd));
+	p_cwd = strdup(cwd);
+
+	home = _getenv("HOME");
+
+	if (home == NULL)
+	{
+		setenv("OLDPWD", p_cwd);
+		free(p_cwd);
+		exit(EXIT_SUCCESS);
+	}
+
+	if (chdir(home) == -1)
+	{
+		free(p_cwd);
+		t_error("Cannot go home\n");
+	}
+
+	setenv("OLDPWD", p_cwd);
+	setenv("PWD", home);
+	free(p_cwd);
+	exit(EXIT_SUCCESS);
 }
 
 /**
@@ -94,5 +129,35 @@ int cd_parent(void)
 
 	setenv("OLDPWD", cp_cwd);
 	free(cp_cwd);
+	exit(EXIT_SUCCESS);
+}
+
+/**
+ * cd_path - changes to a directory given
+ * by the user
+ *
+ * @dir: directory to change to
+ * Return: no return
+ */
+int cd_path(char *dir)
+{
+	char cwd[PATH_MAX];
+	char *cp_cwd, *cp_dir;
+
+	getcwd(cwd, sizeof(cwd));
+
+	if (chdir(dir) == -1)
+		t_error("Cannot change to given directory\n");
+
+	cp_cwd = _strdup(cwd);
+	setenv("OLDPWD", cp_cwd, datash);
+
+	cp_dir = _strdup(dir);
+	setenv("PWD", cp_dir);
+
+	free(cp_cwd);
+	free(cp_dir);
+
+	chdir(dir);
 	exit(EXIT_SUCCESS);
 }
