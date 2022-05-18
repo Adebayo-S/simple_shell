@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * parse_builtins - checks for builtins and executes them
+ *
+ * @input: the input string
+ * @cmd: the command struct
+ * Return: 1 on success and 0 on failure
+ */
 int parse_builtins(char **input, cmd_t *cmd)
 {
 	int i;

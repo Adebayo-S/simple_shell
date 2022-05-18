@@ -17,6 +17,15 @@
 
 extern char **environ;
 
+/**
+ * struct sev_s - shell env vars
+ * @mode: determines the mode of execution
+ * @args: the arguments to be executed
+ * @ready: determines if the shell should run.
+ * @status: the status of the last command executed.
+ *
+ * Description: Struct contain all shell vars.
+ */
 typedef struct cmd_t
 {
 	int mode;
@@ -31,11 +40,10 @@ void prompt(int status);
 void t_error(char *s);
 int _fork(void);
 void setcmd(char *buf, cmd_t *cmd);
-void runcmd(char **input, cmd_t *cmd);
-ssize_t getline(char **lineptr, size_t *n, FILE *stream);
-void *_realloc(void *ptr, size_t originalLength, size_t newLength)
+void *_realloc(void *ptr, size_t old_size, size_t new_size);
 void runcmd(char* dir, char **input, cmd_t *cmd);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+char *_strtok(char *str, const char *delim);
 
 /* ------------------ENVIRONMENT----------------- */
 char *_which(char *input);
@@ -43,6 +51,13 @@ int _env(char **input);
 char *_getenv(const char *name);
 
 /* ------------------BUILTINS----------------- */
+/**
+ * struct builtins - struct contain func name
+ * @name: name of the function
+ * @f: function to be called when name is invoked
+ *
+ * Description: struct of func name and its respective func
+ */
 typedef struct builtins
 {
 	char *name;
@@ -63,9 +78,10 @@ int cd_home(void);
 int _isdigit(const char *str);
 char **get_toks(char *args, char *delimiter);
 void str_reverse(char *s);
-int _strcmp(char *s1, char *s2);
+char *_strdup(char *str);
+int _strcmp(char *str_a, char *str_b);
 char *_strcat(char *dest, char *src);
-char **_strtok(char *line, char *delim);
 int _strlen(char *s);
+int _atoi(char *s);
 
 #endif /* SHELL_H */

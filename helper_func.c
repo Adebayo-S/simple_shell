@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include "shell.h"
 
+/**
+ * open_console - opens the console
+ *
+ * Return: nothing
+ */
 void open_console(void)
 {
 	int fd;
@@ -16,18 +21,34 @@ void open_console(void)
 	}
 }
 
+/**
+ * prompt - write the shell prompt to stdin
+ *
+ * @status: determines if the shell is interactive
+ * Return: nothing
+ */
 void prompt(int status)
 {
 	if (status)
 		write(STDIN_FILENO, ":) ", 3);
 }
 
+/**
+ * t_error - error handler
+ *
+ * @s: error message
+ * Return: nothing
+ */
 void t_error(char *s)
 {
 	write(STDERR_FILENO, s, strlen(s));
-	exit(EXIT_FAILURE);
 }
 
+/**
+ * _fork - creates a child process
+ *
+ * Return: the process ID
+ */
 int _fork(void)
 {
 	pid_t id = fork();
