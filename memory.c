@@ -15,12 +15,24 @@ void free_grid(char **grid, int height)
 	{
 		for (; height >= 0; height--)
 		{
-			printf("%d\n", height);
-			printf("%s\n", grid[height]);
 			free(grid[height]);
-			printf("inner grid freed\n");
 		}
 		free(grid);
-		printf("grid freed\n");
 	}
+}
+
+/**
+ * free_cmd - frees cmd envar
+ *
+ * @cmd: cmd struct
+ * Return: no return
+ */
+void free_cmd(cmd_t *cmd)
+{
+	int i;
+
+	for (i = 0; cmd->envar[i]; i++)
+		free(cmd->envar[i]);
+
+	free(cmd->envar);
 }

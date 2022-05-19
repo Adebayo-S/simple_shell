@@ -16,7 +16,7 @@ void runcmd(char *dir, char **input, cmd_t *cmd)
 	switch (cmd->mode)
 	{
 		case EXEC:
-			if (execve(dir, input, NULL) < 0)
+			if (execve(dir, input, cmd->envar) < 0)
 				t_error("No such file or directory\n");
 			break;
 	}

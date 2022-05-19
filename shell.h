@@ -33,6 +33,7 @@ typedef struct cmd_t
 	char **args;
 	int ready;
 	int status;
+	char **envar;
 } cmd_t;
 
 void open_console(void);
@@ -90,4 +91,5 @@ int _atoi(char *s);
 
 /* ------------------MEMORY----------------- */
 void free_grid(char **grid, int height);
+void free_cmd(cmd_t *cmd);
 #endif /* SHELL_H */

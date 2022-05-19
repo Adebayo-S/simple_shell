@@ -53,6 +53,6 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 			wait(NULL);
 		free(input), free(dir), free(c_input), free(buf);
 	}
-	free(input), free(buf);
+	free(input), free(buf), free_cmd(&cmd);
 	return (cmd.status);
 }
