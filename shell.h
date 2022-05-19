@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #define EXEC 1
 #define MAXARGS 10
@@ -44,6 +45,8 @@ void *_realloc(void *ptr, size_t old_size, size_t new_size);
 void runcmd(char *dir, char **input, cmd_t *cmd);
 ssize_t _getline(char **line_ptr, size_t *n, FILE *stream);
 char *_strtok(char *strn, const char *delim);
+void handl_sigint(int sig);
+char *handl_comment(char *input);
 
 /* ------------------ENVIRONMENT----------------- */
 char *_which(char *input);

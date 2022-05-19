@@ -58,3 +58,14 @@ int _fork(void)
 		t_error("Error: fork failed");
 	return (id);
 }
+
+/**
+ * handl_sigint - Handle signals
+ * @sig: Signal parameter
+ * Return: nothing
+ */
+void handl_sigint(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "<saMosC/> SIGINT\n", 18);
+}

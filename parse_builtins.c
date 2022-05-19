@@ -17,7 +17,10 @@ int parse_builtins(char **input, cmd_t *cmd)
 	};
 
 	if (!input)
+	{
+		free(input);
 		return (0);
+	}
 
 	if (!_strcmp("exit", input[0]))
 		return (exit_sh(input, cmd));

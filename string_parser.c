@@ -14,7 +14,10 @@ char **get_toks(char *args, char *delimiter)
 	char **output = malloc(MAXARGS * sizeof(char *));
 
 	if (output == NULL)
+	{
+		free(output);
 		exit(EXIT_FAILURE);
+	}
 
 	token = _strtok(args, delimiter);
 	while (token != NULL)
@@ -25,7 +28,10 @@ char **get_toks(char *args, char *delimiter)
 		{
 			output = _realloc(output, i, i * sizeof(char *));
 			if (output == NULL)
+			{
+				free(output);
 				exit(EXIT_FAILURE);
+			}
 		}
 		token = _strtok(NULL, delimiter);
 	}

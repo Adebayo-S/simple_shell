@@ -8,14 +8,14 @@
  */
 int _env(char **input)
 {
-	char **tmp = input;
-
 	int i, j;
+
+	(void)input;
 
 	for (i = 0; environ[i]; i++)
 	{
 		for (j = 0; environ[i][j]; j++)
-			tmp++; /* dud */
+			;
 
 		write(STDOUT_FILENO, environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
@@ -82,13 +82,11 @@ char *_which(char *input)
 			dir = malloc(len_dir + len_input + 2);
 			if (dir == NULL)
 			{
-				free(dir);
+				free(dir), free(cpy_path);
 				return (NULL);
 			}
-			_strcpy(dir, path_toks);
-			_strcat(dir, "/");
-			_strcat(dir, input);
-			_strcat(dir, "\0");
+			_strcpy(dir, path_toks), _strcat(dir, "/");
+			_strcat(dir, input), _strcat(dir, "\0");
 			if (stat(dir, &st) == 0)
 			{
 				free(cpy_path);
@@ -99,7 +97,10 @@ char *_which(char *input)
 		}
 		free(cpy_path);
 		if (stat(input, &st) == 0)
+		{
+			free(cpy_path);
 			return (input);
+		}
 		return (NULL);
 	}
 	if (input[0] == '/')

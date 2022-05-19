@@ -29,6 +29,7 @@ int exit_sh(char **input, cmd_t *cmd)
 		cmd->ready = 0;
 	}
 	cmd->ready = 0;
+	free(input);
 	return (1);
 }
 

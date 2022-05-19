@@ -10,37 +10,38 @@
  */
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
-	char *buf = NULL, *dir = NULL;
+	char *buf = NULL, *dir = NULL, *c_input = NULL;
 	cmd_t cmd;
 	ssize_t status = 0, line = 0;
 	size_t buflen = 0;
 	char **input = NULL;
 
-	/*Ensure the 3 file descriptors are open */
+	signal(SIGINT, handl_sigint);
 	open_console();
-
-	/*Initialize the global cmd struct variable*/
 	init_cmd(&cmd);
 
-	/*REPL Loop*/
 	while (cmd.ready)
 	{
 		status = isatty(STDIN_FILENO);
 		prompt(status);
 
-		line = _getline(&buf, &buflen, stdin);
+		line = getline(&buf, &buflen, stdin);
 
 		if (line <= EOF)
 			cmd.ready = 0, exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);
-		input = get_toks(buf, DELIM);
-
-		if (input[0] == NULL)
+		c_input = handl_comment(buf);
+		if (c_input == NULL)
 			continue;
 
-		/*if (parse_builtins(input, &cmd))*/
-			/*continue;*/
+		input = get_toks(c_input, DELIM);
+
+		if (parse_builtins(input, &cmd))
+		{
+			free(input);
+			continue;
+		}
 
 		dir = _which(input[0]);
 
@@ -50,8 +51,8 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 			t_error("invalid command\n");
 		else
 			wait(NULL);
-		free(input), free(dir);
+		free(input), free(dir), free(c_input), free(buf);
 	}
-	free(input); free(buf);
+	free(input), free(buf);
 	return (cmd.status);
 }
