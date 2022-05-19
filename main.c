@@ -32,7 +32,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 
 		setcmd(buf, &cmd);
 		c_input = handl_comment(buf);
-		if (c_input == NULL)
+		if (c_input == NULL || c_input[0] == '\n')
 			continue;
 
 		input = get_toks(c_input, DELIM);
