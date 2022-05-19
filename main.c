@@ -46,11 +46,8 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		else
 			wait(NULL);
 
-		free(buf);
-		free(dir);
-		free(input);
+		free(buf), free(dir), free(input);
 	}
-	free(buf);
-	free(input);
+	free(buf), free(input);
 	return (cmd.status);
 }
