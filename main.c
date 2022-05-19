@@ -36,8 +36,11 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		setcmd(buf, &cmd);
 		input = get_toks(buf, DELIM);
 
-		if (parse_builtins(input, &cmd))
+		if (input[0] == NULL)
 			continue;
+
+		/*if (parse_builtins(input, &cmd))*/
+			/*continue;*/
 
 		dir = _which(input[0]);
 
