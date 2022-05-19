@@ -3,19 +3,21 @@
 /**
  * _strtok - tokenizes a string based on a delimiter
  *
- * @str: string to operate
- * @delim: delimiter
+ * @strn: string to operate
+ * @delimiter: delimiter
  *
  * Return: pointer to string
  * or NULL if there is no match
  *
  */
-char *_strtok(char *str, const char *delim)
+char *_strtok(char *strn, const char *delimiter)
 {
-	const char *org = delim;
+	char *str = strn;
+	const char *org = delimiter;
 	int isEqual = 1, isGetInto = 0;
 	static char *step = NULL, *stepNull = NULL;
-	static int isEnd;
+	static int isEnd = 0;
+	const char *delim = NULL;
 
 	if (str)
 		isEnd = 0;

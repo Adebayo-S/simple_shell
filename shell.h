@@ -42,8 +42,8 @@ int _fork(void);
 void setcmd(char *buf, cmd_t *cmd);
 void *_realloc(void *ptr, size_t old_size, size_t new_size);
 void runcmd(char *dir, char **input, cmd_t *cmd);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
-char *_strtok(char *str, const char *delim);
+ssize_t _getline(char **line_ptr, size_t *n, FILE *stream);
+char *_strtok(char *strn, const char *delim);
 
 /* ------------------ENVIRONMENT----------------- */
 char *_which(char *input);

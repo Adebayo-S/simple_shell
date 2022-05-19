@@ -10,11 +10,11 @@
  */
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
-	char *buf, *dir;
+	char *buf = NULL, *dir = NULL;
 	cmd_t cmd;
-	int status;
+	ssize_t status = 0, line = 0;
 	size_t buflen = 0;
-	char **input;
+	char **input = NULL;
 
 	/*Ensure the 3 file descriptors are open */
 	open_console();
@@ -28,7 +28,9 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		status = isatty(STDIN_FILENO);
 		prompt(status);
 
-		if (_getline(&buf, &buflen, stdin) <= EOF)
+		line = _getline(&buf, &buflen, stdin);
+
+		if (line <= EOF)
 			cmd.ready = 0, exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);

@@ -2,46 +2,53 @@
 
 /**
  * assign_lineptr - Reassigns the lineptr variable for _getline.
- * @lineptr: A buffer to store an input string.
+ * @line_ptr: A buffer to store an input string.
  * @n: The size of lineptr.
  * @buffer: The string to assign to lineptr.
  * @b: The size of buffer.
  */
-void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
+void assign_lineptr(char **line_ptr, size_t *n, char *buffer, size_t b)
 {
+	char **lineptr = line_ptr;
+	char *buf = buffer;
+	size_t *new = n;
+	size_t c = b;
+
 	if (*lineptr == NULL)
 	{
-		if (b > 120)
-			*n = b;
+		if (c > 120)
+			*new = c;
 		else
-			*n = 120;
-		*lineptr = buffer;
+			*new = 120;
+		*lineptr = buf;
 	}
-	else if (*n < b)
+	else if (*new < c)
 	{
-		if (b > 120)
-			*n = b;
+		if (c > 120)
+			*new = c;
 		else
-			*n = 120;
-		*lineptr = buffer;
+			*new = 120;
+		*lineptr = buf;
 	}
 	else
 	{
-		_strcpy(*lineptr, buffer);
-		free(buffer);
+		_strcpy(*lineptr, buf);
+		free(buf);
 	}
 }
 
 /**
  * _getline - Reads input from a stream.
- * @lineptr: A buffer to store the input.
+ * @line_ptr: A buffer to store the input.
  * @n: The size of lineptr.
  * @stream: The stream to read from.
  *
  * Return: The number of bytes read.
  */
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+ssize_t _getline(char **line_ptr, size_t *n, FILE *stream)
 {
+	size_t *new = n;
+	char **lineptr = line_ptr;
 	static ssize_t input = 0;
 	ssize_t ret = 0;
 	char c = 'x';
@@ -75,7 +82,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		buffer[input] = c, input++;
 	}
 	buffer[input] = '\n';
-	assign_lineptr(lineptr, n, buffer, input);
+	assign_lineptr(lineptr, new, buffer, input);
 
 	ret = input;
 	if (r != 0)
