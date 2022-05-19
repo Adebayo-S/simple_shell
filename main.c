@@ -45,8 +45,11 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 			t_error("invalid command\n");
 		else
 			wait(NULL);
-	}
 
+		free(buf);
+		free(dir);
+		free(input);
+	}
 	free(buf);
 	free(input);
 	return (cmd.status);
