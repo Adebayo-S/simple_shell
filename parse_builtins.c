@@ -9,7 +9,7 @@
  */
 int parse_builtins(char **input, cmd_t *cmd)
 {
-	int i;
+	int i = 0;
 
 	built_t builtin[] = {
 		{"env", _env},

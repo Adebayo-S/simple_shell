@@ -27,7 +27,7 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
 	}
 	else
 	{
-		strcpy(*lineptr, buffer);
+		_strcpy(*lineptr, buffer);
 		free(buffer);
 	}
 }
@@ -42,18 +42,17 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
  */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	static ssize_t input;
-	ssize_t ret;
+	static ssize_t input = 0;
+	ssize_t ret = 0;
 	char c = 'x';
-	char *buffer;
-	int r;
+	char *buffer = NULL;
+	int r = 0;
 
 	if (input == 0)
 		fflush(stream);
 	else
 		return (-1);
 
-	input = 0;
 	buffer = malloc(sizeof(char) * 120);
 	if (!buffer)
 		return (-1);

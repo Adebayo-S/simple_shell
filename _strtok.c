@@ -14,7 +14,7 @@ char *_strtok(char *str, const char *delim)
 {
 	const char *org = delim;
 	int isEqual = 1, isGetInto = 0;
-	static char *step, *stepNull;
+	static char *step = NULL, *stepNull = NULL;
 	static int isEnd;
 
 	if (str)

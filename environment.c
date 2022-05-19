@@ -80,6 +80,11 @@ char *_which(char *input)
 		{
 			len_dir = _strlen(path_toks);
 			dir = malloc(len_dir + len_input + 2);
+			if (dir == NULL)
+			{
+				free(dir);
+				return (NULL);
+			}
 			_strcpy(dir, path_toks);
 			_strcat(dir, "/");
 			_strcat(dir, input);

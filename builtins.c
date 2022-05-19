@@ -9,10 +9,10 @@
  */
 int exit_sh(char **input, cmd_t *cmd)
 {
-	unsigned int ustatus;
-	int is_digit;
-	int str_len;
-	int big_number;
+	unsigned int ustatus = 0;
+	int is_digit = 0;
+	int str_len = 0;
+	int big_number = 0;
 
 	if (input[1])
 	{

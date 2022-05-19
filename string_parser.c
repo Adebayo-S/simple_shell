@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "shell.h"
 
 /**
@@ -11,13 +10,13 @@
 char **get_toks(char *args, char *delimiter)
 {
 	int i = 0;
-	char *token;
+	char *token = NULL;
 	char **output = malloc(MAXARGS * sizeof(char *));
 
 	if (output == NULL)
 		exit(EXIT_FAILURE);
 
-	token = strtok(args, delimiter);
+	token = _strtok(args, delimiter);
 	while (token != NULL)
 	{
 		output[i] = token;
@@ -28,7 +27,7 @@ char **get_toks(char *args, char *delimiter)
 			if (output == NULL)
 				exit(EXIT_FAILURE);
 		}
-		token = strtok(NULL, delimiter);
+		token = _strtok(NULL, delimiter);
 	}
 	output[i] = NULL;
 
@@ -43,7 +42,7 @@ char **get_toks(char *args, char *delimiter)
  */
 int _isdigit(const char *str)
 {
-	unsigned int i;
+	unsigned int i = 0;
 
 	for (i = 0; str[i]; i++)
 	{
@@ -60,7 +59,7 @@ int _isdigit(const char *str)
  */
 void str_reverse(char *s)
 {
-	int count = 0, i, j;
+	int count = 0, i = 0, j = 0;
 	char *str, temp;
 
 	while (count >= 0)
@@ -92,7 +91,7 @@ void str_reverse(char *s)
  */
 int _strcmp(char *str_a, char *str_b)
 {
-	int i;
+	int i = 0;
 
 	for (i = 0; str_a[i] != '\0' && str_b[i] != '\0'; i++)
 	{
@@ -111,7 +110,7 @@ int _strcmp(char *str_a, char *str_b)
 
 char *_strcat(char *dest, char *src)
 {
-	int a = -1, i;
+	int a = -1, i = 0;
 
 	for (i = 0; dest[i] != '\0'; i++)
 	;

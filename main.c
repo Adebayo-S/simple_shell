@@ -28,7 +28,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		status = isatty(STDIN_FILENO);
 		prompt(status);
 
-		if (_getline(&buf, &buflen, STDIN_FILENO) <= EOF)
+		if (_getline(&buf, &buflen, stdin) <= EOF)
 			cmd.ready = 0, exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);
@@ -45,9 +45,8 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 			t_error("invalid command\n");
 		else
 			wait(NULL);
-
-		free(buf), free(dir), free(input);
+		free(input), free(dir);
 	}
-	free(buf), free(input);
+	free(input); free(buf);
 	return (cmd.status);
 }

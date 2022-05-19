@@ -85,4 +85,6 @@ int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _atoi(char *s);
 
+/* ------------------MEMORY----------------- */
+void free_grid(char **grid, int height);
 #endif /* SHELL_H */
