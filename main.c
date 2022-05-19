@@ -28,7 +28,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		status = isatty(STDIN_FILENO);
 		prompt(status);
 
-		if (_getline(&buf, &buflen, stdin) <= EOF)
+		if (_getline(&buf, &buflen, STDIN_FILENO) <= EOF)
 			cmd.ready = 0, exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);
