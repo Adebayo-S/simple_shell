@@ -1,56 +1,64 @@
 #include "shell.h"
 
-int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
+/**
+ * main - Entry point of the shell
+ *
+ * @ac: Argument count
+ * @av: Argument vector
+ *
+ * Return: the (int)value of status.
+ */
+int main(int ac, char **av)
 {
-	char *buf;
 	cmd_t cmd;
-	int fd, status;
-	size_t buflen = 0;
-	pid_t id;
-	char **input;
+	(void) ac;
 
-	/*Ensure the 3 file descriptors are open */
-	while ((fd = open("/dev/console", O_RDWR)) >= 0)
+	signal(SIGINT, handl_sigint);
+	/*open_console();*/
+	init_cmd(&cmd, av);
+	rep_loop(&cmd);
+	free_cmd(&cmd);
+	return (cmd.status);
+}
+
+/**
+ * rep_loop - read-eval-print loop of shell
+ * @cmd: data relevant (av, input, args)
+ *
+ * Return: no return.
+ */
+void rep_loop(cmd_t *cmd)
+{
+	int loop;
+	int i_eof;
+	char *input;
+
+	loop = 1;
+	while (loop == 1)
 	{
-		if (fd >= 3)
+		input =  _readwrite(1, &i_eof);
+		if (i_eof != -1)
 		{
-			close(fd);
-			break;
+			input = handl_comment(input);
+			if (input == NULL)
+				continue;
+
+			if (check_syntax_error(cmd, input) == 1)
+			{
+				cmd->status = 2;
+				free(input);
+				continue;
+			}
+
+			input = parse_input(input, cmd);
+			loop = apply_seperators(cmd, input);
+			cmd->counter += 1;
+			free(input);
 		}
-	}
-
-	init_cmd(&cmd);
-
-	while (cmd.ready)
-	{
-		status = isatty(STDIN_FILENO);
-		prompt(status);
-		if (getline(&buf, &buflen, stdin) == EOF)
-		{
-			cmd.ready = 0;
-			exit(EXIT_SUCCESS);
-		}
-
-		setcmd(buf, &cmd);
-		input = get_toks(buf, " \t\n\r");
-
-		// if (check_builtin())
-		// {
-		// 	//perform builtin
-		// 	continue;
-		// }
-
-		/*child process */
-		// if (stat(input[0], &st) == 0)
-		// {
-			if (_fork() == 0)
-				runcmd(input, &cmd);
-		//}
-
 		else
-			wait(NULL);
+		{
+			loop = 0;
+			free(input);
+		}
 	}
-		free(buf);
-		free(input);
-		return (0);
 }
