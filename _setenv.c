@@ -8,7 +8,8 @@
  */
 int _setenv(list_t **env, char **str)
 {
-	int index = 0, j = 0;
+	int index = 0;
+	int j = 0;
 	char *cat;
 	list_t *holder;
 
@@ -22,6 +23,7 @@ int _setenv(list_t **env, char **str)
 	cat = _strcat(cat, "=");
 	cat = _strcat(cat, str[2]);
 	index = find_env(*env, str[1]); /* find idx to traverse to node */
+
 	if (index == -1)
 	{
 		add_end_node(env, cat); /* doesn't exist? create env var */
