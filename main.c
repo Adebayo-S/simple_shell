@@ -8,48 +8,57 @@
  *
  * Return: the (int)value of status.
  */
-int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
+int main(int ac, char **av)
 {
-	char *buf, *dir;
-	struct stat st;
 	cmd_t cmd;
-	int status;
-	size_t buflen = 0;
-	pid_t id;
-	char **input;
+	(void) ac;
 
-	/*Ensure the 3 file descriptors are open */
-	open_console();
-
-	/*Initialize the global cmd struct variable*/
-	init_cmd(&cmd);
-
-	/*REPL Loop*/
-	while (cmd.ready)
-	{
-		status = isatty(STDIN_FILENO);
-		prompt(status);
-
-		if (_getline(&buf, &buflen, stdin) <= EOF)
-			cmd.ready = 0, exit(EXIT_SUCCESS);
-
-		setcmd(buf, &cmd);
-		input = get_toks(buf, DELIM);
-
-		if (parse_builtins(input, &cmd))
-			continue;
-
-		dir = _which(input[0]);
-
-		if (dir && _fork() == 0)
-			runcmd(dir, input, &cmd);
-		else if (!dir)
-			t_error("invalid command\n");
-		else
-			wait(NULL);
-	}
-
-	free(buf);
-	free(input);
+	signal(SIGINT, handl_sigint);
+	/*open_console();*/
+	init_cmd(&cmd, av);
+	rep_loop(&cmd);
+	free_cmd(&cmd);
 	return (cmd.status);
+}
+
+/**
+ * rep_loop - read-eval-print loop of shell
+ * @cmd: data relevant (av, input, args)
+ *
+ * Return: no return.
+ */
+void rep_loop(cmd_t *cmd)
+{
+	int loop;
+	int i_eof;
+	char *input;
+
+	loop = 1;
+	while (loop == 1)
+	{
+		input =  _readwrite(1, &i_eof);
+		if (i_eof != -1)
+		{
+			input = handl_comment(input);
+			if (input == NULL)
+				continue;
+
+			if (check_syntax_error(cmd, input) == 1)
+			{
+				cmd->status = 2;
+				free(input);
+				continue;
+			}
+
+			input = parse_input(input, cmd);
+			loop = apply_seperators(cmd, input);
+			cmd->counter += 1;
+			free(input);
+		}
+		else
+		{
+			loop = 0;
+			free(input);
+		}
+	}
 }
