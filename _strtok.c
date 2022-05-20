@@ -1,4 +1,3 @@
-
 #include "shell.h"
 
 int token_len(char *str, char *delim);
@@ -23,7 +22,6 @@ int token_len(char *str, char *delim)
 		len++;
 		index++;
 	}
-
 	return (len);
 }
 
@@ -41,7 +39,6 @@ int count_tokens(char *str, char *delim)
 
 	for (index = 0; *(str + index); index++)
 		len++;
-
 	for (index = 0; index < len; index++)
 	{
 		if (*(str + index) != *delim)
@@ -50,7 +47,6 @@ int count_tokens(char *str, char *delim)
 			index += token_len(str + index, delim);
 		}
 	}
-
 	return (tokens);
 }
 
@@ -69,16 +65,13 @@ char **_strtok(char *line, char *delim)
 	tokens = count_tokens(line, delim);
 	if (tokens == 0)
 		return (NULL);
-
 	ptr = malloc(sizeof(char *) * (tokens + 2));
 	if (!ptr)
 		return (NULL);
-
 	for (t = 0; t < tokens; t++)
 	{
 		while (line[index] == *delim)
 			index++;
-
 		letters = token_len(line + index, delim);
 
 		ptr[t] = malloc(sizeof(char) * (letters + 1));
@@ -100,6 +93,5 @@ char **_strtok(char *line, char *delim)
 	}
 	ptr[t] = NULL;
 	ptr[t + 1] = NULL;
-
 	return (ptr);
 }
