@@ -6,22 +6,24 @@
  * @input: input data from getline.
  * Return: EXIT_SUCCESS on success.
  */
-int _env(char **input)
+int _env(cmd_t *cmd)
 {
 	int i, j;
 
-	(void)input;
-
-	for (i = 0; environ[i]; i++)
+	for (i = 0; cmd->envar[i]; i++)
 	{
-		for (j = 0; environ[i][j]; j++)
+
+		for (j = 0; cmd->envar[i][j]; j++)
 			;
 
-		write(STDOUT_FILENO, environ[i], j);
+		write(STDOUT_FILENO, cmd->envar[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
+	cmd->status = 0;
+
 	return (1);
 }
+
 
 /**
  * _getenv - gets an environment variable

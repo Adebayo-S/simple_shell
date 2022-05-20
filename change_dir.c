@@ -1,12 +1,11 @@
 #include "shell.h"
 
-
 /**
  * cd_home - changes to home directory
  *
  * Return: EXIT_SUCCESS
  */
-int cd_home(void)
+int cd_home(cmd_t *cmd)
 {
 	char *p_cwd, *home;
 	char cwd[PATH_MAX];
@@ -18,7 +17,7 @@ int cd_home(void)
 
 	if (home == NULL)
 	{
-		setenv("OLDPWD", p_cwd, 1);
+		set_env("OLDPWD", p_cwd, cmd);
 		free(p_cwd);
 		return (1);
 	}
@@ -33,8 +32,8 @@ int cd_home(void)
 	write(STDOUT_FILENO, home, _strlen(home));
 	write(STDOUT_FILENO, "\n", 1);
 
-	setenv("OLDPWD", p_cwd, 1);
-	setenv("PWD", home, 1);
+	set_env("OLDPWD", p_cwd, cmd);
+	set_env("PWD", home, cmd);
 	free(p_cwd);
 	return (1);
 }
@@ -44,7 +43,7 @@ int cd_home(void)
  *
  * Return: EXIT_SUCCESS
  */
-int cd_back(void)
+int cd_back(cmd_t *cmd)
 {
 	char cwd[PATH_MAX];
 	char *p_cwd, *p_oldcwd, *cp_cwd, *cp_oldcwd;
@@ -59,12 +58,12 @@ int cd_back(void)
 	else
 		cp_oldcwd = _strdup(p_oldcwd);
 
-	setenv("OLDPWD", cp_cwd, 1);
+	set_env("OLDPWD", cp_cwd, cmd);
 
 	if (chdir(cp_oldcwd) == -1)
-		setenv("PWD", cp_cwd, 1);
+		set_env("PWD", cp_cwd, cmd);
 	else
-		setenv("PWD", cp_oldcwd, 1);
+		set_env("PWD", cp_oldcwd, cmd);
 
 	p_cwd = _getenv("PWD");
 
@@ -84,7 +83,7 @@ int cd_back(void)
  *
  * Return: EXIT_SUCCESS
  */
-int cd_curr(void)
+int cd_curr(cmd_t *cmd)
 {
 	char cwd[PATH_MAX];
 	char *cp_cwd;
@@ -92,7 +91,7 @@ int cd_curr(void)
 	getcwd(cwd, sizeof(cwd));
 	cp_cwd = _strdup(cwd);
 
-	setenv("PWD", cp_cwd, 1);
+	set_env("PWD", cp_cwd, cmd);
 
 	write(STDOUT_FILENO, cp_cwd, _strlen(cp_cwd));
 	write(STDOUT_FILENO, "\n", 1);
@@ -106,14 +105,14 @@ int cd_curr(void)
  *
  * Return: EXIT_SUCCESS
  */
-int cd_parent(void)
+int cd_parent(cmd_t *cmd)
 {
 	char cwd[PATH_MAX];
 	char *cp_cwd, *cp_strtok_cwd;
 
 	getcwd(cwd, sizeof(cwd));
 	cp_cwd = _strdup(cwd);
-	setenv("OLDPWD", cp_cwd, 1);
+	set_env("OLDPWD", cp_cwd, cmd);
 
 	if (!_strcmp("/", cp_cwd))
 	{
@@ -135,12 +134,12 @@ int cd_parent(void)
 	if (cp_strtok_cwd != NULL)
 	{
 		chdir(cp_strtok_cwd);
-		setenv("PWD", cp_strtok_cwd, 1);
+		set_env("PWD", cp_strtok_cwd, cmd);
 	}
 	else
 	{
 		chdir("/");
-		setenv("PWD", "/", 1);
+		set_env("PWD", "/", cmd);
 	}
 
 	write(STDOUT_FILENO, cp_strtok_cwd, _strlen(cp_strtok_cwd));
@@ -157,7 +156,7 @@ int cd_parent(void)
  * @dir: directory to change to
  * Return: no return
  */
-int cd_path(char *dir)
+int cd_path(char *dir, cmd_t *cmd)
 {
 	char cwd[PATH_MAX];
 	char *cp_cwd, *cp_dir;
@@ -170,10 +169,10 @@ int cd_path(char *dir)
 		return (1);
 	}
 	cp_cwd = _strdup(cwd);
-	setenv("OLDPWD", cp_cwd, 1);
+	set_env("OLDPWD", cp_cwd, cmd);
 
 	cp_dir = _strdup(dir);
-	setenv("PWD", cp_dir, 1);
+	set_env("PWD", cp_dir, cmd);
 
 	write(STDOUT_FILENO, cp_dir, _strlen(cp_dir));
 	write(STDOUT_FILENO, "\n", 1);

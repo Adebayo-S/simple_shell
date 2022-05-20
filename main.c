@@ -8,42 +8,46 @@
  *
  * Return: the (int)value of status.
  */
-int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
+int main(int ac __attribute__((unused)), char **av)
 {
-	char *buf = NULL, *bufkill = buf, *c_input = NULL;
 	cmd_t cmd;
-	ssize_t state = 0;
-	size_t buflen = 0;
-	char **input = NULL;
 
 	signal(SIGINT, handl_sigint);
-	open_console();
-	init_cmd(&cmd);
-
-	while (cmd.ready)
-	{
-		state = isatty(STDIN_FILENO);
-		prompt(state);
-
-		if (getline(&buf, &buflen, stdin) <= EOF)
-			cmd.ready = 0, free(bufkill), exit(EXIT_SUCCESS);
-
-		setcmd(buf, &cmd);
-		c_input = handl_comment(buf);
-		if (c_input == NULL || c_input[0] == '\n')
-			continue;
-
-		input = get_toks(c_input, DELIM), free(c_input);
-
-		if (parse_builtins(input, &cmd))
-		{
-			free(input);
-			continue;
-		}
-
-		execution(input, &cmd);
-		free(input), free(bufkill), free_cmd(&cmd);
-	}
-	/*free(input), free(buf), free(c_input), free_cmd(&cmd);*/
+	/*open_console();*/
+	init_cmd(&cmd, av);
+	rep_loop(&cmd);
+	free_cmd(&cmd);
 	return (cmd.status);
 }
+
+/**
+ * rep_loop - read-eval-print loop of shell
+ * @cmd: data relevant (av, input, args)
+ *
+ * Return: no return.
+ */
+void rep_loop(cmd_t *cmd)
+{
+	char *c_input = NULL;
+	ssize_t /*state = 0,*/ eof_c = 0;
+
+	while (cmd->ready)
+	{
+		/*state = isatty(STDIN_FILENO);*/
+		c_input = _readwrite(1, &eof_c);
+
+		if (eof_c <= EOF)
+			cmd->ready = 0, free(c_input);
+		else
+		{
+			c_input = handl_comment(c_input);
+			if (c_input == NULL || c_input[0] == '\n')
+				continue;
+
+			c_input = parse_input(c_input, cmd);
+			(cmd->ready) = apply_seperators(cmd, c_input);
+			free(c_input);
+		}
+	}
+}
+
