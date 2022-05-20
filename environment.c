@@ -3,7 +3,7 @@
 /**
  * _env - prints the evironment variables
  *
- * @input: input data from getline.
+ * @cmd: global struct variable.
  * Return: EXIT_SUCCESS on success.
  */
 int _env(cmd_t *cmd)
