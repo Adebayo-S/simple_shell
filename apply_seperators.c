@@ -164,7 +164,7 @@ int apply_seperators(cmd_t *cmd, char *input)
 	free_sep_list(&head_s);
 	free_line_list(&head_l);
 
-	if (ready== 0)
+	if (ready == 0)
 		return (0);
 	return (1);
 }

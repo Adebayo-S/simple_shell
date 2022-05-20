@@ -49,7 +49,7 @@ ssize_t _getline(char **line_ptr, size_t *n, FILE *stream)
 {
 	size_t *new = n;
 	char **lineptr = line_ptr;
-	static ssize_t input = 0;
+	static ssize_t input;
 	ssize_t ret = 0;
 	char c = 'x';
 	char *buffer = NULL;
@@ -59,7 +59,6 @@ ssize_t _getline(char **line_ptr, size_t *n, FILE *stream)
 		fflush(stream);
 	else
 		return (-1);
-
 	buffer = malloc(sizeof(char) * 120);
 	if (!buffer)
 		return (-1);
@@ -83,7 +82,6 @@ ssize_t _getline(char **line_ptr, size_t *n, FILE *stream)
 	}
 	buffer[input] = '\n';
 	assign_lineptr(lineptr, new, buffer, input);
-
 	ret = input;
 	if (r != 0)
 		input = 0;
