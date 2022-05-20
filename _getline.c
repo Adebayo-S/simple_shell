@@ -1,7 +1,6 @@
 #include "shell.h"
 /**
- * assign_lineptr - 
- * Reassigns the lineptr variable for _getline.
+ * assign_lineptr - Reassigns the lineptr variable for _getline.
  * @lineptr: A buffer to store an input string.
  * @n: The size of lineptr.
  * @buffer: The string to assign to lineptr.
@@ -57,7 +56,6 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream)
 	while (c != '\n')
 	{
 		r = read(STDIN_FILENO, &c, 1);
-
 		if (r == -1 || (r == 0 && input == 0))
 		{
 			free(buffer);
@@ -73,11 +71,9 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream)
 		buffer[input] = c;
 		input++
 	}
-
 	buffer[input] = '\n';
 	assign_lineptr(lineptr, n, buffer, input);
 	ret = input;
-
 	if (r != 0)
 	{
 		input = 0;
