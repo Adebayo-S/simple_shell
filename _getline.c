@@ -39,7 +39,7 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
  *
  * Return: The number of bytes read.
  */
-ssize_t getline(char **lineptr, size_t *n, FILE *stream)
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
 	static ssize_t input;
 	ssize_t ret;
