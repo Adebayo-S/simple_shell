@@ -44,6 +44,6 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 		execution(input, &cmd);
 		free(input), free(bufkill), free_cmd(&cmd);
 	}
-	free(input), free(buf), free(c_input), free_cmd(&cmd);
+	/*free(input), free(buf), free(c_input), free_cmd(&cmd);*/
 	return (cmd.status);
 }
