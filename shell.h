@@ -48,6 +48,8 @@ ssize_t _getline(char **line_ptr, size_t *n, FILE *stream);
 char *_strtok(char *strn, const char *delim);
 void handl_sigint(int sig);
 char *handl_comment(char *input);
+int execution(char** input, cmd_t *cmd);
+int check_dir_access(char **input, char* dir);
 
 /* ------------------ENVIRONMENT----------------- */
 char *_which(char *input);
@@ -88,6 +90,7 @@ char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _atoi(char *s);
+int is_cdir(char *path, int *i);
 
 /* ------------------MEMORY----------------- */
 void free_grid(char **grid, int height);

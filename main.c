@@ -10,9 +10,9 @@
  */
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
-	char *buf = NULL, *dir = NULL, *c_input = NULL;
+	char *buf = NULL, *bufkill = buf, *c_input = NULL;
 	cmd_t cmd;
-	ssize_t status = 0, line = 0;
+	ssize_t state = 0;
 	size_t buflen = 0;
 	char **input = NULL;
 
@@ -22,20 +22,18 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 
 	while (cmd.ready)
 	{
-		status = isatty(STDIN_FILENO);
-		prompt(status);
+		state = isatty(STDIN_FILENO);
+		prompt(state);
 
-		line = getline(&buf, &buflen, stdin);
-
-		if (line <= EOF)
-			cmd.ready = 0, exit(EXIT_SUCCESS);
+		if (getline(&buf, &buflen, stdin) <= EOF)
+			cmd.ready = 0, free(bufkill), exit(EXIT_SUCCESS);
 
 		setcmd(buf, &cmd);
 		c_input = handl_comment(buf);
 		if (c_input == NULL || c_input[0] == '\n')
 			continue;
 
-		input = get_toks(c_input, DELIM);
+		input = get_toks(c_input, DELIM), free(c_input);
 
 		if (parse_builtins(input, &cmd))
 		{
@@ -43,15 +41,8 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 			continue;
 		}
 
-		dir = _which(input[0]);
-
-		if (dir && _fork() == 0)
-			runcmd(dir, input, &cmd);
-		else if (!dir)
-			t_error("invalid command\n");
-		else
-			wait(NULL);
-		free(input), free(dir), free(c_input), free(buf), free_cmd(&cmd);
+		execution(input, &cmd);
+		free(input), free(bufkill), free_cmd(&cmd);
 	}
 	free(input), free(buf), free(c_input), free_cmd(&cmd);
 	return (cmd.status);

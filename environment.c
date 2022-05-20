@@ -65,7 +65,7 @@ char *_getenv(const char *name)
 char *_which(char *input)
 {
 	char *path, *cpy_path, *path_toks, *dir;
-	int len_dir, len_input;
+	int len_dir, len_input, i;
 	struct stat st;
 
 	path = _getenv("PATH");
@@ -75,9 +75,12 @@ char *_which(char *input)
 		cpy_path = _strdup(path);
 		len_input = _strlen(input);
 		path_toks = _strtok(cpy_path, ":");
-
+		i = 0;
 		while (path_toks != NULL)
 		{
+			if (is_cdir(path, &i))
+				if (stat(input, &st) == 0)
+					return (input);
 			len_dir = _strlen(path_toks);
 			dir = malloc(len_dir + len_input + 2);
 			if (dir == NULL)
@@ -92,8 +95,7 @@ char *_which(char *input)
 				free(cpy_path);
 				return (dir);
 			}
-			free(dir);
-			path_toks = _strtok(NULL, ":");
+			free(dir), path_toks = _strtok(NULL, ":");
 		}
 		free(cpy_path);
 		if (stat(input, &st) == 0)
