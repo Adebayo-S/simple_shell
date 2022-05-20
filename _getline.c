@@ -93,7 +93,8 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream)
 
 	assign_lineptr(lineptr, n, buffer, input);
 	ret = input;
-	if(r != 0)
+
+	if (r != 0)
 	{
 		input = 0;
 	}
@@ -101,5 +102,5 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream)
 }
 	mem[input_size] = '\0';
 
-	return mem;
+	return (mem);
 }
