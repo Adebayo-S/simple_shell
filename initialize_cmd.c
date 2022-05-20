@@ -17,6 +17,7 @@ void init_cmd(cmd_t *cmd, char **av)
 	cmd->ready = 1;
 	cmd->status = 0;
 	cmd->av = av;
+	cmd->counter = 1;
 	cmd->pid = _itoa(getpid());
 
 	for (i = 0; environ[i]; i++)

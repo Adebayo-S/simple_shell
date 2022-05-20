@@ -1,13 +1,14 @@
 #include "shell.h"
 
 /**
- * parse_builtins - checks for builtins and executes them
+ * parse_builtins - checks for builtins and returns the
+ *     associated function
  *
  * @input: the input string
- * @cmd: the command struct
+ * @input: the command struct
  * Return: 1 on success and 0 on failure
  */
-int parse_builtins(cmd_t *cmd)
+int (*get_builtin(char *input))(cmd_t *)
 {
 	int i = 0;
 
@@ -23,10 +24,10 @@ int parse_builtins(cmd_t *cmd)
 
 	for (i = 0; builtin[i].name; i++)
 	{
-		if (!_strcmp(builtin[i].name, cmd->args[0]))
-			return (builtin[i].f(cmd));
+		if (!_strcmp(builtin[i].name, input))
+			break;
 	}
-	return (0);
+	return (builtin[i].f);
 }
 
 /**

@@ -51,7 +51,7 @@ void evar_check(list_t **head, char *input, cmd_t *cmd)
  * @cmd: data structure
  * Return: no return
  */
-void scan_vars(list_t **h, char *input, char *status, cmd_t *cmd, int *p)
+int scan_vars(list_t **h, char *input, char *status, cmd_t *cmd)
 {
 	int i, j, stlen, pid_len;
 
@@ -84,7 +84,7 @@ void scan_vars(list_t **h, char *input, char *status, cmd_t *cmd, int *p)
 		}
 	}
 
-	*p = i;
+	return (i);
 }
 
 /**
@@ -155,7 +155,7 @@ char *parse_input(char *input, cmd_t *cmd)
 	status = _itoa(cmd->status);
 	head = NULL;
 
-	scan_vars(&head, input, status, cmd, &olen);
+	olen =scan_vars(&head, input, status, cmd);
 
 	if (head == NULL)
 	{

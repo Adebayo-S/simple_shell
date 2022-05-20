@@ -13,7 +13,7 @@ int cd_home(cmd_t *cmd)
 	getcwd(cwd, sizeof(cwd));
 	p_cwd = _strdup(cwd);
 
-	home = _getenv("HOME");
+	home = _getenv("HOME", cmd->envar);
 
 	if (home == NULL)
 	{
@@ -51,7 +51,7 @@ int cd_back(cmd_t *cmd)
 	getcwd(cwd, sizeof(cwd));
 	cp_cwd = _strdup(cwd);
 
-	p_oldcwd = _getenv("OLDPWD");
+	p_oldcwd = _getenv("OLDPWD", cmd->envar);
 
 	if (p_oldcwd == NULL)
 		cp_oldcwd = cp_cwd;
@@ -65,7 +65,7 @@ int cd_back(cmd_t *cmd)
 	else
 		set_env("PWD", cp_oldcwd, cmd);
 
-	p_cwd = _getenv("PWD");
+	p_cwd = _getenv("PWD", cmd->envar);
 
 	write(STDOUT_FILENO, p_cwd, _strlen(p_cwd));
 	write(STDOUT_FILENO, "\n", 1);

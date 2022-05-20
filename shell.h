@@ -35,6 +35,7 @@ typedef struct cmd_t
 	int ready;
 	int status;
 	char **envar;
+	int counter;
 	char **av;
 	char *pid;
 } cmd_t;
@@ -47,7 +48,7 @@ int _fork(void);
 void setcmd(char *buf, cmd_t *cmd);
 void *_realloc(void *ptr, size_t old_size, size_t new_size);
 char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
-char *_readwrite(int status, ssize_t *is_eof);
+char *_readwrite(int status, int *is_eof);
 void runcmd(char *dir, char **input, cmd_t *cmd);
 ssize_t _getline(char **line_ptr, size_t *n, FILE *stream);
 char *_strtok(char *strn, const char *delim);
@@ -55,13 +56,14 @@ void handl_sigint(int sig);
 char *handl_comment(char *input);
 int execution(cmd_t *cmd);
 void rep_loop(cmd_t *cmd);
+int cmd_exec(cmd_t *cmd);
 int check_dir_access(char *dir, cmd_t *cmd);
 int apply_seperators(cmd_t *cmd, char *input);
 
 /* ------------------ENVIRONMENT----------------- */
-char *_which(char *input);
+char *_which(char *cmd, char **_environ);
 int _env(cmd_t *cmd);
-char *_getenv(const char *name);
+char *_getenv(const char *name, char **_environ);
 
 /* ------------------BUILTINS----------------- */
 /**
@@ -143,9 +145,10 @@ int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _atoi(char *s);
 int is_cdir(char *path, int *i);
+int (*get_builtin(char *input))(cmd_t *);
 char *parse_input(char *input, cmd_t *cmd);
 char *replaced_input(list_t **head, char *input, char *new_input, int nlen);
-void scan_vars(list_t **h, char *input, char *status, cmd_t *cmd, int *p);
+int scan_vars(list_t **h, char *input, char *status, cmd_t *cmd);
 void evar_check(list_t **head, char *input, cmd_t *cmd);
 int get_len(int n);
 char *_itoa(int n);
@@ -179,6 +182,13 @@ void aux_help_cd(void);
 
 /* get_help.c */
 int get_help(cmd_t *cmd);
+
+/* check_syntax_error.c */
+int repeated_char(char *input, int i);
+int error_sep_op(char *input, int i, char last);
+int first_char(char *input, int *i);
+void print_syntax_error(cmd_t *cmd, char *input, int i, int bool);
+int check_syntax_error(cmd_t *cmd, char *input);
 
 
 #endif /* SHELL_H */

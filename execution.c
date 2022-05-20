@@ -53,37 +53,66 @@ int is_executable(cmd_t *cmd)
  */
 int execution(cmd_t *cmd)
 {
+	int (*builtin)(cmd_t *cmd);
+
+	if (cmd->args[0] == NULL)
+		return (1);
+
+	builtin = get_builtin(cmd->args[0]);
+
+	if (builtin != NULL)
+		return (builtin(cmd));
+
+	return (cmd_exec(cmd));
+}
+
+/**
+ * run_exec - executes command lines
+ *
+ * @cmd: data relevant (args and input)
+ * Return: 1 on success.
+ */
+int cmd_exec(cmd_t *cmd)
+{
+	pid_t pd;
+	pid_t wpd;
+	int state;
+	int exec;
 	char *dir;
-	pid_t pid, ppid;
-	int wstatus, exec;
-	(void) ppid;
-
-	if (!(cmd->args[0]))
-		return (1);
-
-	if (parse_builtins(cmd))
-		return (1);
+	(void) wpd;
 
 	exec = is_executable(cmd);
 	if (exec == -1)
 		return (1);
 	if (exec == 0)
 	{
-		dir = _which(cmd->args[0]);
+		dir = _which(cmd->args[0], cmd->envar);
 		if (check_dir_access(dir, cmd) == 1)
 			return (1);
 	}
 
-	if ((pid = _fork()) == 0)
+	pd = fork();
+	if (pd == 0)
+	{
+		if (exec == 0)
+			dir = _which(cmd->args[0], cmd->envar);
+		else
+			dir = cmd->args[0];
 		execve(dir + exec, cmd->args, cmd->envar);
+	}
+	else if (pd < 0)
+	{
+		perror(cmd->av[0]);
+		return (1);
+	}
 	else
 	{
 		do {
-				ppid = waitpid(pid, &wstatus, WUNTRACED);
-		} while (!WIFEXITED(wstatus) && !WIFSIGNALED(wstatus));
+			wpd = waitpid(pd, &state, WUNTRACED);
+		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
 	}
 
-	cmd->status = wstatus / 256;
+	cmd->status = state / 256;
 	return (1);
 }
 
@@ -102,7 +131,7 @@ int check_dir_access(char *dir, cmd_t *cmd)
 		return (1);
 	}
 
-	if (!_strcmp(cmd->args[0], dir))
+	if (_strcmp(cmd->args[0], dir))
 	{
 		if (access(dir, X_OK) == -1)
 		{

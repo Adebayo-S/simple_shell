@@ -26,36 +26,58 @@ int _env(cmd_t *cmd)
 
 
 /**
- * _getenv - gets an environment variable
+ * cmp_env_name - compares env variables names
+ * with the name passed.
+ * @nenv: name of the environment variable
+ * @name: name passed
  *
- * @name: name of environmental variable
- *
- * Return: pointer to the value in the environment,
- * or NULL if there is no match *
+ * Return: 0 if are not equal. Another value if they are.
  */
-char *_getenv(const char *name)
+int cmp_env_name(const char *nenv, const char *name)
 {
-	int i, j, start;
-	char *envar = NULL;
+	int i;
 
-	for (i = 0; environ[i]; i++)
+	for (i = 0; nenv[i] != '='; i++)
 	{
-		for (j = 0; environ[i][j] != '='; j++)
+		if (nenv[i] != name[i])
 		{
-			if (environ[i][j] != name[j])
-			{
-				start = 0;
-				break;
-			}
-			envar = environ[i];
+			return (0);
 		}
-		if (environ[i][j] == '=')
+	}
+
+	return (i + 1);
+}
+
+/**
+ * _getenv - get an environment variable
+ * @name: name of the environment variable
+ * @_environ: environment variable
+ *
+ * Return: value of the environment variable if is found.
+ * In other case, returns NULL.
+ */
+char *_getenv(const char *name, char **_environ)
+{
+	char *ptr_env;
+	int i, mov;
+
+	/* Initialize ptr_env value */
+	ptr_env = NULL;
+	mov = 0;
+	/* Compare all environment variables */
+	/* environ is declared in the header file */
+	for (i = 0; _environ[i]; i++)
+	{
+		/* If name and env are equal */
+		mov = cmp_env_name(_environ[i], name);
+		if (mov)
 		{
-			start = (j + 1);
+			ptr_env = _environ[i];
 			break;
 		}
 	}
-	return (envar + start);
+
+	return (ptr_env + mov);
 }
 
 /**
@@ -64,51 +86,45 @@ char *_getenv(const char *name)
  *
  * Return: the path of the command or NULL if invalid
  */
-char *_which(char *input)
+char *_which(char *cmd, char **_environ)
 {
-	char *path, *cpy_path, *path_toks, *dir;
-	int len_dir, len_input, i;
+	char *path, *ptr_path, *token_path, *dir;
+	int len_dir, len_cmd, i;
 	struct stat st;
 
-	path = _getenv("PATH");
-
+	path = _getenv("PATH", _environ);
 	if (path)
 	{
-		cpy_path = _strdup(path);
-		len_input = _strlen(input);
-		path_toks = _strtok(cpy_path, ":");
+		ptr_path = _strdup(path);
+		len_cmd = _strlen(cmd);
+		token_path = _strtok(ptr_path, ":");
 		i = 0;
-		while (path_toks != NULL)
+		while (token_path != NULL)
 		{
 			if (is_cdir(path, &i))
-				if (stat(input, &st) == 0)
-					return (input);
-			len_dir = _strlen(path_toks);
-			dir = malloc(len_dir + len_input + 2);
-			if (dir == NULL)
-			{
-				free(dir), free(cpy_path);
-				return (NULL);
-			}
-			_strcpy(dir, path_toks), _strcat(dir, "/");
-			_strcat(dir, input), _strcat(dir, "\0");
+				if (stat(cmd, &st) == 0)
+					return (cmd);
+			len_dir = _strlen(token_path);
+			dir = malloc(len_dir + len_cmd + 2);
+			_strcpy(dir, token_path);
+			_strcat(dir, "/");
+			_strcat(dir, cmd);
+			_strcat(dir, "\0");
 			if (stat(dir, &st) == 0)
 			{
-				free(cpy_path);
+				free(ptr_path);
 				return (dir);
 			}
-			free(dir), path_toks = _strtok(NULL, ":");
+			free(dir);
+			token_path = _strtok(NULL, ":");
 		}
-		free(cpy_path);
-		if (stat(input, &st) == 0)
-		{
-			free(cpy_path);
-			return (input);
-		}
+		free(ptr_path);
+		if (stat(cmd, &st) == 0)
+			return (cmd);
 		return (NULL);
 	}
-	if (input[0] == '/')
-		if (stat(input, &st) == 0)
-			return (input);
+	if (cmd[0] == '/')
+		if (stat(cmd, &st) == 0)
+			return (cmd);
 	return (NULL);
 }

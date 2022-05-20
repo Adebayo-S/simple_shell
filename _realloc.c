@@ -1,6 +1,24 @@
 #include "shell.h"
 
 /**
+ * _memcpy - copies information between void pointers.
+ * @newptr: destination pointer.
+ * @ptr: source pointer.
+ * @size: size of the new pointer.
+ *
+ * Return: no return.
+ */
+void _memcpy(void *newptr, const void *ptr, unsigned int size)
+{
+	char *char_ptr = (char *)ptr;
+	char *char_newptr = (char *)newptr;
+	unsigned int i;
+
+	for (i = 0; i < size; i++)
+		char_newptr[i] = char_ptr[i];
+}
+
+/**
  * _realloc - reallocates a memory block.
  * @ptr: pointer to the memory previously allocated.
  * @old_size: size, in bytes, of the allocated space of ptr.
@@ -12,46 +30,31 @@
  */
 void *_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	unsigned int i = 0, j = 0;
-	char *newPtr = NULL;
+	void *newptr;
 
-	if (old_size == new_size)
-		return (ptr);
 	if (ptr == NULL)
-	{
-		ptr = malloc(new_size);
-		if (ptr == NULL)
-			return (NULL);
-		return (ptr);
-	}
+		return (malloc(new_size));
 
-	if (new_size == 0 && ptr != NULL)
+	if (new_size == 0)
 	{
 		free(ptr);
 		return (NULL);
 	}
-	newPtr = malloc(new_size * sizeof(char));
-			if (newPtr == NULL)
-				return (NULL);
 
-	if (new_size > old_size)
-	{
-		for (i = 0; i < old_size; i++)
-		{
-			newPtr[i] = ((char *)ptr)[i];
-		}
-		free(ptr);
-		return (newPtr);
-	}
+	if (new_size == old_size)
+		return (ptr);
+
+	newptr = malloc(new_size);
+	if (newptr == NULL)
+		return (NULL);
+
+	if (new_size < old_size)
+		_memcpy(newptr, ptr, new_size);
 	else
-	{
-		for (j = 0; j < new_size; j++)
-		{
-			newPtr[j] = ((char *)ptr)[j];
-		}
-		free(ptr);
-		return (newPtr);
-	}
+		_memcpy(newptr, ptr, old_size);
+
+	free(ptr);
+	return (newptr);
 }
 
 /**
