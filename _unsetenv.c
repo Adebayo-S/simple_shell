@@ -16,6 +16,7 @@ int _unsetenv(list_t **env, char **str)
 		return (-1);
 	}
 	index = find_env(*env, str[1]); /* get idx of node to delete */
+
 	free_double_ptr(str);
 	if (index == -1) /* check if index errored */
 	{
