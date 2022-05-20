@@ -24,6 +24,11 @@ extern char **environ;
  * @args: the arguments to be executed
  * @ready: determines if the shell should run.
  * @status: the status of the last command executed.
+ * @av: the argv array
+ * @counter: the number of loops.
+ * @pid: the pid of the last command executed.
+ * @input: the input commands.
+ * @envar: the environment variables.
  *
  * Description: Struct contain all shell vars.
  */
@@ -96,7 +101,7 @@ int cd_home(cmd_t *cmd);
 /* ----------------LINKEDLIST ------------ */
 /**
  * struct list_s - linked list
- * @len: length of the variable
+ * @var_len: length of the variable
  * @val: value of the variable
  * @len_val: length of the value
  * @next: next node

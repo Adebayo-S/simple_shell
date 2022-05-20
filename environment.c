@@ -82,8 +82,9 @@ char *_getenv(const char *name, char **_environ)
 
 /**
  * _which - Append command to corresponding PATH directory
- * @input: input data from getline.
  *
+ * @cmd: input data from getline.
+ * @_environ: env data
  * Return: the path of the command or NULL if invalid
  */
 char *_which(char *cmd, char **_environ)

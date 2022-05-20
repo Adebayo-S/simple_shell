@@ -1,12 +1,11 @@
 #include "shell.h"
 
 /**
- * parse_builtins - checks for builtins and returns the
+ * get_builtin - checks for builtins and returns the
  *     associated function
  *
  * @input: the input string
- * @input: the command struct
- * Return: 1 on success and 0 on failure
+ * Return: the function if found
  */
 int (*get_builtin(char *input))(cmd_t *)
 {
@@ -65,7 +64,6 @@ int get_help(cmd_t *cmd)
 /**
  * exit_sh - exits the shell
  *
- * @input: vector of inputed arguments
  * @cmd: struct of global variables
  * Return: 0 on success.
  */

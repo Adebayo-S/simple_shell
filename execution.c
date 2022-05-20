@@ -67,7 +67,7 @@ int execution(cmd_t *cmd)
 }
 
 /**
- * run_exec - executes command lines
+ * cmd_exec - executes command lines
  *
  * @cmd: data relevant (args and input)
  * Return: 1 on success.

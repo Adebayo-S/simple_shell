@@ -3,6 +3,7 @@
 /**
  * cd_home - changes to home directory
  *
+ * @cmd: global struct variable
  * Return: EXIT_SUCCESS
  */
 int cd_home(cmd_t *cmd)
@@ -41,6 +42,7 @@ int cd_home(cmd_t *cmd)
 /**
  * cd_back - changes to the previous directory
  *
+ * @cmd: global struct variable
  * Return: EXIT_SUCCESS
  */
 int cd_back(cmd_t *cmd)
@@ -81,6 +83,7 @@ int cd_back(cmd_t *cmd)
 /**
  * cd_curr - changes to the current directory
  *
+ * @cmd: global struct variable
  * Return: EXIT_SUCCESS
  */
 int cd_curr(cmd_t *cmd)
@@ -103,6 +106,7 @@ int cd_curr(cmd_t *cmd)
 /**
  * cd_parent - changes to the current directory
  *
+ * @cmd: global struct variable
  * Return: EXIT_SUCCESS
  */
 int cd_parent(cmd_t *cmd)
@@ -153,6 +157,7 @@ int cd_parent(cmd_t *cmd)
  * cd_path - changes to a directory given
  * by the user
  *
+ * @cmd: global struct variable
  * @dir: directory to change to
  * Return: no return
  */

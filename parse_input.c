@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * evar_env - checks if the typed variable is an env variable
+ * evar_check - checks if the typed variable is an env variable
  *
  * @head: head of linked list
  * @input: input string
- * @data: data structure
+ * @cmd: global struct variable
  * Return: no return
  */
 void evar_check(list_t **head, char *input, cmd_t *cmd)
@@ -35,7 +35,8 @@ void evar_check(list_t **head, char *input, cmd_t *cmd)
 
 	for (k = 0; input[k]; k++)
 	{
-		if (input[k] == ' ' || input[k] == '\t' || input[k] == ';' || input[k] == '\n')
+		if (input[k] == ' ' || input[k] == '\t' ||
+		input[k] == ';' || input[k] == '\n')
 			break;
 	}
 
@@ -155,7 +156,7 @@ char *parse_input(char *input, cmd_t *cmd)
 	status = _itoa(cmd->status);
 	head = NULL;
 
-	olen =scan_vars(&head, input, status, cmd);
+	olen = scan_vars(&head, input, status, cmd);
 
 	if (head == NULL)
 	{

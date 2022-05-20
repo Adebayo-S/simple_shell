@@ -5,7 +5,7 @@
  * @head: head of the linked list.
  * @var_len: length of the variable.
  * @val: value of the variable.
- * @val_len: length of the value.
+ * @len_val: length of the value.
  * Return: address of the head.
  */
 list_t *add_node_end(list_t **head, int var_len, char *val, int len_val)
@@ -39,7 +39,7 @@ list_t *add_node_end(list_t **head, int var_len, char *val, int len_val)
 }
 
 /**
- * free_rvar_list - frees a r_var list
+ * free_list - frees a list_t list
  * @head: head of the linked list.
  * Return: no return.
  */
