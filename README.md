@@ -29,3 +29,11 @@ cd simple_shell
 ### 3. Compile the code
 
 ```
+gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+```
+
+### 4. Execute the compiled 
+
+```
+./hsh
+```
