@@ -21,3 +21,5 @@ simple_shell is a linus command interpreter, which takes in commands through sta
 ```
 
 ### 2. Change directory into the project
+
+```
