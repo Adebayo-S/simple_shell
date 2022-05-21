@@ -14,4 +14,6 @@ simple_shell is a linus command interpreter, which takes in commands through sta
 
 `Commands for setup`
 
+### 1. Clone this repo to your local machine
+
 
