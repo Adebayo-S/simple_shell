@@ -24,3 +24,4 @@ simple_shell is a linus command interpreter, which takes in commands through sta
 
 ```
 cd simple_shell
+```
