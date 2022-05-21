@@ -17,5 +17,3 @@ simple_shell is a linus command interpreter, which takes in commands through sta
 ### 1. Clone this repo to your local machine
 
 ```
-
-
